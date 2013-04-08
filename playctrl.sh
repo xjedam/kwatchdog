@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Not to use for development, its creating a jar file and launch it with java."
+
 COMMAND=$1
 PORT=9000
 
