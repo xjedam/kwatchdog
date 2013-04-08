@@ -23,7 +23,7 @@ if [ -f "./logs/application.log" ]; then
 kill_app
 fi
 echo " Staging application"
-  ./sbt stage
+ ./sbt stage
 echo " Starting application "
 nohup ./target/start -Dhttp.port=$PORT > "./logs/application.log" 2>&1 &
 }
