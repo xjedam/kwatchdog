@@ -15,13 +15,14 @@ trait Secured {
     }
   }
 
-  def withUser(accessLevel: Int)(f: model.User => Request[AnyContent] => Result) = withAuth { username => implicit request =>
-    model.User.getUser(username).map { user =>
-      if(model.User.roles.get(user.role).getOrElse(-1) >= accessLevel) {
-        f(user)(request)
-      } else {
-        onUnauthorized(request)
-      }
-    }.getOrElse(onUnauthorized(request))
+  def withUser(accessLevel: Int)(f: model.User => Request[AnyContent] => Result) = withAuth { username =>
+    implicit request =>
+      model.User.getUser(username).map { user =>
+        if (model.User.roles.get(user.role).getOrElse(-1) >= accessLevel) {
+          f(user)(request)
+        } else {
+          onUnauthorized(request)
+        }
+      }.getOrElse(onUnauthorized(request))
   }
 }

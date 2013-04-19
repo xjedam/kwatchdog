@@ -1,0 +1,9 @@
+@(form: Form[(String, String, String, String)], username: String)
+
+
+@main("Create a new user", "KWatchdog")(username) {
+
+        <h2>Create a new server</h2>
+
+        @serverForm(form)
+}

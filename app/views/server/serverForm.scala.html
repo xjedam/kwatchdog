@@ -1,0 +1,14 @@
+@(form: Form[(String, String, String, String)])
+
+@import helper.twitterBootstrap._
+
+@helper.form(action = routes.Server.submit) {
+    
+    @helper.inputText(form("ip"))
+    @helper.inputText(form("name"))
+    @helper.inputText(form("location"))
+    @helper.inputText(form("details"))
+    <br />
+    <input id ="Submit" type="submit" value="Submit" />
+    
+}
