@@ -1,0 +1,20 @@
+@(form: Form[(String, String)])
+
+@import helper.twitterBootstrap._
+
+@main("Log in", "KWatchdog")("") {
+
+	@helper.form(action = routes.Auth.authenticate) {
+		@form.errors.map { error =>
+		    <p class="error">
+		    Error!  @error.key (@error.message)
+		    </p>
+		}
+	    @helper.inputText(form("login"))
+	    @helper.inputPassword(form("password"))
+	    <br />
+	    <input id ="Login" type="submit" value="Login" />
+	    
+	}
+	
+}

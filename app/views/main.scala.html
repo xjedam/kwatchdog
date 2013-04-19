@@ -1,4 +1,4 @@
-@(title: String, projectName: String)(content: Html)
+@(title: String, projectName: String)(username: String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -30,8 +30,12 @@
 		    <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="@routes.User.create">Register</a></li>
-              <li><a href="#">Log in</a></li>
+              @if(username == "") {
+	            <li><a href="@routes.User.create">Register</a></li>
+	            <li><a href="@routes.Auth.login">Log in</a></li>
+              } else {
+            	<li><a href="@routes.Auth.logout">Log out</a></li>
+              }
             </ul>
           </li>
 			  </li>

@@ -15,7 +15,14 @@ object User extends Controller {
     Ok(views.html.user.create(createForm))
   }
   
-  def submit = Action {
-    Ok(views.html.index("Smth happened"))
+  def submit = Action {implicit request =>
+    createForm.bindFromRequest.fold(
+        errors => BadRequest(":("),
+        obj => {
+          model.User.createUser(obj)
+          Ok(views.html.index("Smth happened", ""))
+          }
+    )
+    
   }
 }
