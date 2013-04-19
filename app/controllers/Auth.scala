@@ -25,7 +25,7 @@ object Auth extends Controller {
   def check(username: String, password: String) = {
     val user = model.User.getUser(username)
     val test = user match {
-	  case Some(c: model.User) => c.login.endsWith("@kainos.com")
+      case Some(c: model.User) => c.login.endsWith("@kainos.com")
 	  case _ => false
 	}
     password == globalPass && test

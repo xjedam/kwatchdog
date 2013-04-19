@@ -7,7 +7,7 @@ trait Secured {
 
   def username(request: RequestHeader) = request.session.get(Security.username)
 
-  def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Auth.login)
+  def onUnauthorized(request: RequestHeader) = Results.Forbidden
 
   def withAuth(f: => String => Request[AnyContent] => Result) = {
     Security.Authenticated(username, onUnauthorized) { user =>
@@ -15,13 +15,13 @@ trait Secured {
     }
   }
 
-  /**
-   * This method shows how you could wrap the withAuth method to also fetch your user
-   * You will need to implement UserDAO.findOneByUsername
-   */
-  def withUser(f: model.User => Request[AnyContent] => Result) = withAuth { username => implicit request =>
+  def withUser(accessLevel: Int)(f: model.User => Request[AnyContent] => Result) = withAuth { username => implicit request =>
     model.User.getUser(username).map { user =>
-      f(user)(request)
+      if(model.User.roles.get(user.role).getOrElse(-1) >= accessLevel) {
+        f(user)(request)
+      } else {
+        onUnauthorized(request)
+      }
     }.getOrElse(onUnauthorized(request))
   }
 }
