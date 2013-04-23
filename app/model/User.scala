@@ -8,7 +8,8 @@ import scala.collection.immutable.Map
 case class User(
   _id: ObjectId,
   login: String,
-  role: String)
+  role: String,
+  lang: String)
 
 object User extends Entity("users") {
 
@@ -18,9 +19,10 @@ object User extends Entity("users") {
     save(MongoDBObject("login" -> login, "role" -> role))
   }
 
-  def getUser(login: String) = {
+  def getUser(login: String): Option[model.User] = {
     getOne(MongoDBObject("login" -> login)) match {
-      case Some(u: DBObject) => Some(new User(u.get("_id").asInstanceOf[ObjectId], u.get("login").asInstanceOf[String], u.get("role").asInstanceOf[String]))
+      case Some(u: DBObject) => Some(new User(u.get("_id").asInstanceOf[ObjectId], u.get("login").asInstanceOf[String], u.get("role").asInstanceOf[String],
+          u.get("lang").asInstanceOf[String]))
       case _ => None
     }
   }

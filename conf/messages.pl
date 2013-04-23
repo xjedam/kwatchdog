@@ -1,0 +1,1 @@
+app.greeting = Witamy w KWatchdog - stronie do monitorowania serwerów!
