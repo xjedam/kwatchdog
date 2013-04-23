@@ -1,4 +1,4 @@
-@(title: String, projectName: String)(username: String)(content: Html)
+@(title: String, projectName: String)(username: String, language: play.api.i18n.Lang)(content: Html)
 
 <!DOCTYPE html>
 
@@ -25,21 +25,21 @@
 		<a class="brand" href="#">@projectName</a>
 		<div class="nav-collapse collapse navbar-responsive-collapse">
 		  <ul class="nav">
-		    <li class="active"><a href="@routes.Application.index">Home</a></li>
+		    <li class="active"><a href="@routes.Application.index">@Messages("app.menuHome")(language)</a></li>
 		    <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Servers<b class="caret"></b></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Messages("serv.menu")(language)<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="@routes.Server.create">New server</a></li>
+            <li><a href="@routes.Server.create">@Messages("serv.menuNew")(language)</a></li>
           </ul>
         </li>
 		    <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Messages("auth.account")(language)<b class="caret"></b></a>
             <ul class="dropdown-menu">
               @if(username == "") {
-	            <li><a href="@routes.User.create">Register</a></li>
-	            <li><a href="@routes.Auth.login">Log in</a></li>
+	            <li><a href="@routes.User.create">@Messages("auth.register")(language)</a></li>
+	            <li><a href="@routes.Auth.login">@Messages("auth.login")(language)</a></li>
               } else {
-            	<li><a href="@routes.Auth.logout">Log out</a></li>
+            	<li><a href="@routes.Auth.logout">@Messages("auth.logout")(language)</a></li>
               }
             </ul>
           </li>

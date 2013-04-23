@@ -9,8 +9,8 @@ object Application extends Controller with Secured{
 
   def index = Action { implicit request =>
     request.session.get(Security.username) match {
-      case Some(uname:String) => Ok(views.html.index(Messages("app.greeting")(language), uname))
-      case _ => Ok(views.html.index(Messages("app.greeting")(language), ""))
+      case Some(uname:String) => Ok(views.html.index(Messages("app.greeting")(language), uname, language))
+      case _ => Ok(views.html.index(Messages("app.greeting")(language), "", language))
     }
   }
 }

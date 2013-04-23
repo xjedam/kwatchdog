@@ -1,1 +1,24 @@
+app.name = KWatchdog
 app.greeting = Welcome in KWatchdog - a server monitoring service!
+app.menuHome = Home
+app.newUser = Create a new user
+
+auth.badpass = Invalid password or user name
+auth.logout = You are now logged out
+auth.account = Account
+auth.register = Register
+auth.login = Log in
+auth.logout = Log out
+auth.formLogin = Login
+auth.formPassword = Password
+
+serv.badIP = Must be a proper IP address
+serv.letdig = Can contain only letters or digits
+serv.created = New server has been successfully added
+serv.menu = Servers
+serv.menuNew = New server
+serv.newServer = Create a new server
+serv.formIp = IP address
+serv.formName = Server name
+serv.formLoc = Server location
+serv.formDet = Server details

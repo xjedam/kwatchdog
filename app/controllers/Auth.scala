@@ -7,16 +7,18 @@ import play.api.mvc.Controller
 import play.api.data.Form
 import play.api.data.Forms._
 import com.mongodb.DBObject
+import play.api.i18n.Messages
+import controllers.security.Secured
 
-object Auth extends Controller {
+object Auth extends Controller with Secured {
 
   private val globalPass = "qwerasdf"
 
-  val loginForm = Form(
+  def loginForm(implicit req: Request[AnyContent]) = Form(
     tuple(
       "login" -> text,
       "password" -> text)
-      verifying ("Invalid login or password", result => result match {
+      verifying (Messages("auth.badpass")(language), result => result match {
         case (login, password) => check(login, password)
       }))
 
@@ -30,17 +32,17 @@ object Auth extends Controller {
   }
 
   def login = Action { implicit request =>
-    Ok(views.html.login(loginForm))
+    Ok(views.html.login(loginForm(request), language))
   }
 
   def authenticate = Action { implicit request =>
     loginForm.bindFromRequest.fold(
-      formWithErrors => BadRequest(":("),
+      formWithErrors => BadRequest(formWithErrors.errorsAsJson(language)),
       user => Redirect(routes.Application.index).withSession(Security.username -> user._1))
   }
 
-  def logout = Action {
+  def logout = Action { implicit request =>
     Redirect(routes.Auth.login).withNewSession.flashing(
-      "success" -> "You are now logged out.")
+      "success" -> Messages("auth.logout")(language))
   }
 }

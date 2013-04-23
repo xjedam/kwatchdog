@@ -1,5 +1,5 @@
-@(message: String, uname: String)
+@(message: String, uname: String, language: play.api.i18n.Lang)
 
-@main("Welcome to Play 2.1", "KWatchdog")(uname) {	
+@main(Messages("app.name"), Messages("app.name"))(uname, language) {	
 	<h1>@message</h1>
 }

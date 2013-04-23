@@ -1,9 +1,9 @@
-@(form: Form[(String, String, String, String)], username: String)
+@(form: Form[(String, String, String, String)], username: String, language: play.api.i18n.Lang)
 
 
-@main("Create a new user", "KWatchdog")(username) {
+@main(Messages("app.newServer")(language), Messages("app.name"))(username, language) {
 
-        <h2>Create a new server</h2>
+        <h2>@Messages("app.newServer")(language)</h2>
 
-        @serverForm(form)
+        @serverForm(form, language)
 }

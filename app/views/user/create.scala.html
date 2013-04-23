@@ -1,9 +1,9 @@
-@(uForm: Form[(String)])
+@(uForm: Form[(String)], language: play.api.i18n.Lang)
 
 
-@main("Create a new user", "KWatchdog")("") {
+@main(Messages("app.newUser")(language), Messages("app.name"))("", language) {
 
-        <h2>Create a new user</h2>
+        <h2>@Messages("app.newUser")(language)</h2>
 
-        @userForm(uForm)
+        @userForm(uForm, language)
 }

@@ -1,8 +1,8 @@
-@(form: Form[(String, String)])
+@(form: Form[(String, String)], language: play.api.i18n.Lang)
 
 @import helper.twitterBootstrap._
 
-@main("Log in", "KWatchdog")("") {
+@main(Messages("auth.login")(language), Messages("app.name"))("", language) {
 
 	@helper.form(action = routes.Auth.authenticate) {
 		@form.errors.map { error =>
@@ -13,7 +13,7 @@
 	    @helper.inputText(form("login"))
 	    @helper.inputPassword(form("password"))
 	    <br />
-	    <input id ="Login" type="submit" value="Login" />
+	    <input id ="Login" type="submit" value=@Messages("auth.login")(language) />
 	    
 	}
 	
