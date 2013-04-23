@@ -2,7 +2,7 @@
 
 @import helper.twitterBootstrap._
 
-@main(Messages("auth.login")(language), Messages("app.name"))("", language) {
+@main(Messages("auth.login")(language), Messages("app.name"))(None, language) {
 
 	@helper.form(action = routes.Auth.authenticate) {
 		@form.errors.map { error =>

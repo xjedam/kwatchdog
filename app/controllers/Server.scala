@@ -21,20 +21,15 @@ object Server extends Controller with Secured {
     
     
   def create = withUser(15) { user => implicit request => {
-    user match {
-      case Some(u: model.User) => Ok(views.html.server.create(createForm(request), u.login, language))
-      case _ => Ok(views.html.server.create(createForm, "", language))
-    }
-  }
-    
-  }
+    Ok(views.html.server.create(createForm(request), user, language))
+  }}
 
   def submit = withUser(15) { user => implicit request => 
     createForm.bindFromRequest.fold(
       errors => BadRequest(errors.errorsAsJson(language)),
       obj => {
         model.Server.createServer(obj._1, obj._2, obj._3, obj._4, user.get._id)
-        Ok(views.html.index(Messages("serv.created")(language), "", language))
+        Ok(views.html.index(Messages("serv.created")(language), None, language))
       })
   }
 }

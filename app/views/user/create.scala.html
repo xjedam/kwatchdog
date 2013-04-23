@@ -1,7 +1,7 @@
 @(uForm: Form[(String)], language: play.api.i18n.Lang)
 
 
-@main(Messages("app.newUser")(language), Messages("app.name"))("", language) {
+@main(Messages("app.newUser")(language), Messages("app.name"))(None, language) {
 
         <h2>@Messages("app.newUser")(language)</h2>
 

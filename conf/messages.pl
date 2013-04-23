@@ -2,6 +2,11 @@ app.name = KWatchdog
 app.greeting = Witamy w KWatchdog - stronie do monitorowania serwerów!
 app.menuHome = Start
 app.newUser = Stwórz konto
+app.manageUser = Zarządzanie użytkownikami
+app.userDetails = Podgląd użytkownika
+app.actions = Akcje
+app.edit = Edytuj
+app.delete = Usuń
 
 auth.badpass = Złe hasło lub nazwa użytkownika
 auth.logout = Zostałeś wylogowany
@@ -11,6 +16,10 @@ auth.login = Zaloguj się
 auth.logout = Wyloguj się
 auth.formLogin = Nazwa konta
 auth.formPassword = Hasło
+auth.accMgr = Zarządzaj kontami
+auth.role = Rola
+auth.lang = Język
+auth.loginVerify = Nazwa użytkownika musi składać się wyłącznie z liter i cyfr
 
 serv.badIP = Musisz podać poprawny adres IP
 serv.letdig = Może składać się wyłącznie z liter i numerów

@@ -1,0 +1,25 @@
+@(viewedUser: model.User, user: Option[model.User], language: play.api.i18n.Lang)
+
+@main(Messages("app.userDetails")(language), Messages("app.name"))(user, language) {
+
+  <h2>@Messages("app.userDetails")(language)</h2>
+  <div id="userView">
+    <table>
+      <tbody>
+        <tr>
+          <td>@Messages("auth.formLogin")(language)</td>
+          <td>@viewedUser.login</td>
+        </tr>
+        <tr>
+          <td>@Messages("auth.role")(language)</td>
+          <td>@viewedUser.role</td>
+        </tr>
+        <tr>
+          <td>@Messages("auth.lang")(language)</td>
+          <td>@viewedUser.lang</td>
+        </tr>
+      </tbody>  
+    </table>
+  </div>
+
+}

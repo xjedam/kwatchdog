@@ -4,6 +4,7 @@ import com.mongodb.casbah.Imports._
 import play.api.Play
 import com.mongodb.WriteConcern
 import scala.collection.immutable.Map
+import com.mongodb.casbah.commons.MongoDBObject
 
 abstract class Entity(collection: String) {
   val mongoClient = MongoClient(Play.current.configuration.getString("mongohost").getOrElse(null),
@@ -14,7 +15,9 @@ abstract class Entity(collection: String) {
     coll.save(entity, WriteConcern.NORMAL)
   }
 
-  def getOne[A](searchObject: DBObject) = {
+  def getOne(searchObject: DBObject) = {
     coll.findOne(searchObject)
   }
+  
+  def getAll = coll.find(MongoDBObject.empty).toList
 }

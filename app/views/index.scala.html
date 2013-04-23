@@ -1,5 +1,5 @@
-@(message: String, uname: String, language: play.api.i18n.Lang)
+@(message: String, user: Option[model.User], language: play.api.i18n.Lang)
 
-@main(Messages("app.name"), Messages("app.name"))(uname, language) {	
+@main(Messages("app.name"), Messages("app.name"))(user, language) {	
 	<h1>@message</h1>
 }

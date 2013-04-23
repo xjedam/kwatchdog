@@ -1,7 +1,7 @@
-@(form: Form[(String, String, String, String)], username: String, language: play.api.i18n.Lang)
+@(form: Form[(String, String, String, String)], user: Option[model.User], language: play.api.i18n.Lang)
 
 
-@main(Messages("app.newServer")(language), Messages("app.name"))(username, language) {
+@main(Messages("app.newServer")(language), Messages("app.name"))(user, language) {
 
         <h2>@Messages("app.newServer")(language)</h2>
 

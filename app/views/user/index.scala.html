@@ -1,0 +1,25 @@
+@(users: Seq[model.User], user: Option[model.User], language: play.api.i18n.Lang)
+
+@main(Messages("app.manageUser")(language), Messages("app.name"))(user, language) {
+
+  <h2>@Messages("app.manageUser")(language)</h2>
+  <table class="table-striped table-bordered" id="usersTable">
+  <thead>
+    <tr>
+      <th>@Messages("auth.formLogin")(language)</th>
+      <th>@Messages("auth.role")(language)</th>
+      <th>@Messages("app.actions")(language)</th>
+    </tr>
+  </thead>  
+  <tbody>
+    @users.map { u =>
+      <tr>
+        <td><a href="@routes.User.view(u.login)">@u.login</a></td>
+        <td>@u.role</td>
+        <td><a href="@routes.User.delete(u.login)">@Messages("app.delete")(language)</a> <a href="@routes.User.edit(u.login)">@Messages("app.edit")(language)</a></td>
+      </tr>
+    }
+  </tbody>        
+</table>
+
+}

@@ -1,4 +1,4 @@
-@(title: String, projectName: String)(username: String, language: play.api.i18n.Lang)(content: Html)
+@(title: String, projectName: String)(user: Option[model.User], language: play.api.i18n.Lang)(content: Html)
 
 <!DOCTYPE html>
 
@@ -35,11 +35,17 @@
 		    <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Messages("auth.account")(language)<b class="caret"></b></a>
             <ul class="dropdown-menu">
-              @if(username == "") {
-	            <li><a href="@routes.User.create">@Messages("auth.register")(language)</a></li>
-	            <li><a href="@routes.Auth.login">@Messages("auth.login")(language)</a></li>
-              } else {
-            	<li><a href="@routes.Auth.logout">@Messages("auth.logout")(language)</a></li>
+              @user match {
+                case Some(u: model.User) => { 
+                  @if(model.User.roles.get(u.role).get >= model.User.roles.get("admin").get) {
+                    <li><a href="@routes.User.index">@Messages("auth.accMgr")(language)</a></li>
+                  }
+                  <li><a href="@routes.Auth.logout">@Messages("auth.logout")(language)</a></li>
+                }
+                case _ => {
+                  <li><a href="@routes.Auth.login">@Messages("auth.login")(language)</a></li>
+                  <li><a href="@routes.User.create">@Messages("auth.register")(language)</a></li>
+                }
               }
             </ul>
           </li>

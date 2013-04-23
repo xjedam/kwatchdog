@@ -1,0 +1,39 @@
+@(userForm: Form[(String, String, String)], editedUser: model.User, user: Option[model.User], language: play.api.i18n.Lang)
+
+@import helper.twitterBootstrap._
+
+@main(Messages("app.userDetails")(language), Messages("app.name"))(user, language) {
+
+  <h2>@Messages("app.userDetails")(language)</h2>
+  @helper.form(action = routes.User.update(editedUser._id.toString())) {
+    <div id="userEdit">
+      <table>
+        <tbody>
+          <tr>
+            <td>@helper.input(userForm("login")){ (id, name, value, args) => 
+              <input type="text" id="login" name="login" value="@editedUser.login" >
+            }</td>
+          </tr>
+          <tr>
+            <td>@helper.input(userForm("role")){ (id, name, value, args) => 
+              <select name="@name" id="@id">
+              @model.User.roles.keySet.map { role => 
+                @if(role == editedUser.role) {
+                  <option selected value=@role>@role</option>
+                } else {
+                  <option value=@role>@role</option>
+                }
+              }
+            }</td>
+          </tr>
+          <tr>
+            <td>@helper.input(userForm("lang")){ (id, name, value, args) => 
+              <input type="text" id="lang" name="lang" value="@editedUser.lang" >
+            }</td>
+          </tr>
+        </tbody>  
+      </table>
+      <input id ="Submit" type="submit" value="Submit" />
+    </div>
+  }
+}
