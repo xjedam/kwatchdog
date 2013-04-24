@@ -1,0 +1,25 @@
+@(servers: Seq[model.Server], user: Option[model.User], language: play.api.i18n.Lang)
+
+@main(Messages("serv.serverList")(language), Messages("app.name"))(user, language) {
+
+  <h2>@Messages("serv.serverList")(language)</h2>
+  <table class="table-striped table-bordered" id="usersTable">
+  <thead>
+    <tr>
+      <th>@Messages("serv.formName")(language)</th>
+      <th>@Messages("serv.formIp")(language)</th>
+      <th>@Messages("app.actions")(language)</th>
+    </tr>
+  </thead>  
+  <tbody>
+    @servers.map { s =>
+      <tr>
+        <td><a href="#">@s.name</a></td>
+        <td>@s.ip</td>
+        <td><a href="@routes.Server.edit(s._id.toString())">@Messages("app.edit")(language)</a></td>
+      </tr>
+    }
+  </tbody>        
+</table>
+
+}

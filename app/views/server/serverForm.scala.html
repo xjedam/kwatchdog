@@ -1,4 +1,4 @@
-@(form: Form[(String, String, String, String)], language: play.api.i18n.Lang)
+@(form: Form[(String, String, String, String, String, Int)], language: play.api.i18n.Lang)
 
 @import helper.twitterBootstrap._
 
@@ -8,6 +8,10 @@
     @helper.inputText(form("name"))
     @helper.inputText(form("location"))
     @helper.inputText(form("details"))
+    @helper.select(field = form("method"), options = model.Server.checkMethods.map{
+        case (key, value) => (key, Messages(value)(language))
+      }(collection.breakOut): Seq[(String, String)])
+    @helper.inputText(form("period"))
     <br />
     <input id ="Submit" type="submit" value="Submit" />
     

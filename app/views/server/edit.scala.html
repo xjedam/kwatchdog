@@ -1,0 +1,23 @@
+@(form: Form[(String, String, String, String, String, Int)], server: model.Server, user: Option[model.User], language: play.api.i18n.Lang, isAdmin: Boolean)
+
+@import helper.twitterBootstrap._
+
+@main(Messages("serv.editServer")(language), Messages("app.name"))(user, language) {
+
+  <h2>@Messages("serv.editServer")(language)</h2>
+  
+  @helper.form(action = routes.Server.update(server._id.toString())) {
+      
+      @helper.inputText(form("ip"))
+      @helper.inputText(form("name"))
+      @helper.inputText(form("location"))
+      @helper.inputText(form("details"))
+      @helper.select(field = form("method"), options = model.Server.checkMethods.map{
+          case (key, value) => (key, Messages(value)(language))
+        }(collection.breakOut): Seq[(String, String)])
+      @helper.inputText(form("period"))
+      <br />
+      <input id ="Submit" type="submit" value="Submit" />
+      
+  }
+}

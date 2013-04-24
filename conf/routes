@@ -18,8 +18,11 @@ GET   /users/:login/delete          controllers.User.delete(login: String)
 GET   /users/:login/edit            controllers.User.edit(login: String)
 POST  /users/:id/update             controllers.User.update(id: String)
 
+GET   /servers                      controllers.Server.index
 GET   /servers/new                  controllers.Server.create
+GET   /servers/:id/edit             controllers.Server.edit(id: String)
 GET   /servers/submit               controllers.Server.submit
+POST  /servers/:id/update           controllers.Server.update(id: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET   /assets/*file                 controllers.Assets.at(path="/public", file)
