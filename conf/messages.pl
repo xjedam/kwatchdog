@@ -7,6 +7,7 @@ app.userDetails = Podgląd użytkownika
 app.actions = Akcje
 app.edit = Edytuj
 app.delete = Usuń
+app.langChanged = Język zmieniony na polski
 
 auth.badpass = Złe hasło lub nazwa użytkownika
 auth.logout = Zostałeś wylogowany

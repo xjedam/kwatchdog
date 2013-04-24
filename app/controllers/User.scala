@@ -31,6 +31,16 @@ object User extends Controller with Secured {
   def isOwner(editedContet: Option[model.User]) = { user: model.User =>
      user._id == editedContet.get._id
   }
+  
+  def changeLang(lang: String) = withUser(15) { user => implicit request => 
+    user match {
+      case Some(u: model.User) => {
+        model.User.saveUser(new model.User(u._id, u.login, u.role, lang, u.disabled))
+        Ok(views.html.index(Messages("app.langChanged")(language), user, language))
+      }
+      case _ => BadRequest(":(")
+    }
+  }
 
   def submit = Action { implicit request =>
     createForm.bindFromRequest.fold(

@@ -10,6 +10,7 @@ GET    /logout                      controllers.Auth.logout
 POST   /authenticate                controllers.Auth.authenticate
 
 GET   /users                        controllers.User.index
+GET   /users/lang/$lang<(en|pl)>    controllers.User.changeLang(lang:String)
 GET		/users/new					          controllers.User.create
 GET		/users/submit				          controllers.User.submit
 GET   /users/:login/view            controllers.User.view(login: String)
