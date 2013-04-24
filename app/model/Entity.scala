@@ -20,4 +20,6 @@ abstract class Entity(collection: String) {
   }
   
   def getAll = coll.find(MongoDBObject.empty).toList
+  
+  def delete(id: ObjectId) = coll.remove(MongoDBObject("_id" -> id))
 }

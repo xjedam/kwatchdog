@@ -20,6 +20,8 @@ auth.accMgr = Manage accounts
 auth.role = Role
 auth.lang = Language
 auth.loginVerify = Login must contain only letters and digits
+auth.disabled = Disabled
+auth.notAdmin = You do not have Administrator permissions
 
 serv.badIP = Must be a proper IP address
 serv.letdig = Can contain only letters or digits

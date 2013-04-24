@@ -36,10 +36,10 @@ trait Secured {
     }
   }
 
-  def withUser(accessLevel: Int)(f: Option[model.User] => Request[AnyContent] => Result) = withAuth(accessLevel) { username =>
+  def withUser(accessLevel: Int, otherPermissions: (model.User => Boolean) = u => false)(f: Option[model.User] => Request[AnyContent] => Result) = withAuth(accessLevel) { username =>
     implicit request =>
       model.User.getUser(username).map { user =>
-        if (model.User.roles.get(user.role).getOrElse(-1) >= accessLevel) {
+        if (model.User.roles.get(user.role).getOrElse(-1) >= accessLevel || otherPermissions(user)) {
           f(Some(user))(request)
         } else {
           onUnauthorized(request)

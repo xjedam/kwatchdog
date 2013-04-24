@@ -1,4 +1,4 @@
-@(userForm: Form[(String, String, String)], editedUser: model.User, user: Option[model.User], language: play.api.i18n.Lang)
+@(userForm: Form[(String, String, String, Boolean)], editedUser: model.User, user: Option[model.User], language: play.api.i18n.Lang, isAdmin: Boolean)
 
 @import helper.twitterBootstrap._
 
@@ -10,30 +10,56 @@
       <table>
         <tbody>
           <tr>
-            <td>@helper.input(userForm("login")){ (id, name, value, args) => 
-              <input type="text" id="login" name="login" value="@editedUser.login" >
-            }</td>
+            <td>
+              <div class="adminArea">
+                @helper.input(userForm("login")){ (id, name, value, args) => 
+                  <input type="text" id="login" name="login" value="@editedUser.login" >
+                }
+              </div>
+            </td>
           </tr>
           <tr>
-            <td>@helper.input(userForm("role")){ (id, name, value, args) => 
-              <select name="@name" id="@id">
-              @model.User.roles.keySet.map { role => 
-                @if(role == editedUser.role) {
-                  <option selected value=@role>@role</option>
-                } else {
-                  <option value=@role>@role</option>
+            <td>
+              <div class="adminArea">
+                @helper.input(userForm("role")){ (id, name, value, args) => 
+                  <select name="@name" id="@id">
+                  @model.User.roles.keySet.map { role => 
+                    @if(role == editedUser.role) {
+                      <option selected value=@role>@role</option>
+                    } else {
+                      <option value=@role>@role</option>
+                    }
+                  }
                 }
-              }
-            }</td>
+              </div>
+            </td>
           </tr>
           <tr>
             <td>@helper.input(userForm("lang")){ (id, name, value, args) => 
               <input type="text" id="lang" name="lang" value="@editedUser.lang" >
             }</td>
           </tr>
+          <tr>
+            <td>
+              <div class="adminArea">
+                @helper.input(userForm("disabled")){ (id, name, value, args) => 
+                  <input type="checkbox" id="disabled" name="disabled" value="true"
+                      @if(editedUser.disabled) {
+                        checked
+                      }
+                  >
+                }
+              </div>
+            </td>
+          </tr>
         </tbody>  
       </table>
       <input id ="Submit" type="submit" value="Submit" />
     </div>
   }
+  <script type="text/javascript">
+  @if(!isAdmin) {
+    $(".adminArea").attr("style", "display: none;")
+  }
+  </script>
 }

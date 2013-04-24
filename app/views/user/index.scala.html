@@ -8,6 +8,7 @@
     <tr>
       <th>@Messages("auth.formLogin")(language)</th>
       <th>@Messages("auth.role")(language)</th>
+      <th>@Messages("auth.disabled")(language)</th>
       <th>@Messages("app.actions")(language)</th>
     </tr>
   </thead>  
@@ -16,6 +17,7 @@
       <tr>
         <td><a href="@routes.User.view(u.login)">@u.login</a></td>
         <td>@u.role</td>
+        <td>@u.disabled</td>
         <td><a href="@routes.User.delete(u.login)">@Messages("app.delete")(language)</a> <a href="@routes.User.edit(u.login)">@Messages("app.edit")(language)</a></td>
       </tr>
     }
