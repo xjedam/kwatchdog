@@ -20,7 +20,11 @@ object Auth extends Controller with Secured {
       "password" -> text)
       verifying (Messages("auth.badpass")(language), result => result match {
         case (login, password) => check(login, password)
-      }))
+      })
+      verifying(Messages("auth.accDisabled")(language), result => result match {
+        case (login, password) => checkDisabled(login)
+      })
+      )
 
   def check(username: String, password: String) = {
     val user = model.User.getUser(username)
@@ -29,6 +33,14 @@ object Auth extends Controller with Secured {
       case _ => false
     }
     password == globalPass && test
+  }
+  
+  def checkDisabled(username: String) = {
+    val user = model.User.getUser(username)
+    user match {
+      case Some(c: model.User) => !c.disabled
+      case _ => false
+    }
   }
 
   def login = Action { implicit request =>

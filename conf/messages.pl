@@ -23,6 +23,7 @@ auth.lang = Język
 auth.loginVerify = Nazwa użytkownika musi składać się wyłącznie z liter i cyfr
 auth.disabled = Wyłączone
 auth.notAdmin = Nie masz przywilejów administratora
+auth.accDisabled = Konto wyłączone
 
 serv.badIP = Musisz podać poprawny adres IP
 serv.letdig = Może składać się wyłącznie z liter i numerów
