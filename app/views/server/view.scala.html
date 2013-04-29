@@ -1,10 +1,13 @@
-@(server: model.Server, user: Option[model.User], weekStatusList: play.api.libs.json.JsArray, language: play.api.i18n.Lang)
+@(server: model.Server, user: Option[model.User], weekStatusList: play.api.libs.json.JsArray, monthOnline: Int, monthOffline: Int, language: play.api.i18n.Lang)
 
 @main(Messages("serv.view")(language), Messages("app.name"))(user, language) {
 
   <h2>@Messages("serv.view")(language) - @server.name</h2>
   <div id="serverView">
     @serverStatus.weekChart(weekStatusList, language)
+  </div>
+  <div id="serverMonthView">
+    @serverStatus.pieChart(monthOnline, monthOffline, language)
   </div>
   <script src="@routes.Assets.at("javascripts/d3.v3.min.js")" type="text/javascript"></script>
 }

@@ -44,3 +44,4 @@ serv.serverList = Your servers
 serv.editServer = Edit server
 serv.view = Server details
 serv.weekChart = Server availability during last week
+serv.pieChart = Server availability during last month

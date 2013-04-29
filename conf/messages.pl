@@ -44,3 +44,4 @@ serv.serverList = Twoje serwery
 serv.editServer = Edycja serwera
 serv.view = Szczegóły serwera
 serv.weekChart = Dostępność serwera w ciągu ostatnich 7 dni
+serv.pieChart = Dostępność serwera w ciągu ostatnich 30 dni

@@ -82,9 +82,16 @@ object Server extends Controller with Secured {
         cal.add(Calendar.DAY_OF_YEAR, -7)
         cal.set(Calendar.HOUR_OF_DAY, 0)
         val q: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id)
-        val arr = new JsArray(model.ServerStatus.getStatusList(q)
+        val arrChart = new JsArray(model.ServerStatus.getStatusList(q)
             .map{s => new JsObject(Seq(("date", Json.toJson(s.date)), ("online", Json.toJson(s.online))))})
-        Ok(views.html.server.view(s, user, arr, language))
+        
+        cal.add(Calendar.DAY_OF_YEAR, -23)
+        val qonline: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id, "online" -> true)
+        val qoffline: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id, "online" -> false)
+        val countOn = model.ServerStatus.getStatusList(qonline).length
+        val countOff = model.ServerStatus.getStatusList(qoffline).length
+          
+        Ok(views.html.server.view(s, user, arrChart, countOn, countOff, language))
       }
       case _ => BadRequest(":(")
     }
