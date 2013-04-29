@@ -7,6 +7,7 @@ app.userDetails = Podgląd użytkownika
 app.actions = Akcje
 app.edit = Edytuj
 app.delete = Usuń
+app.view = Pokaż
 app.langChanged = Język zmieniony na polski
 
 auth.badpass = Złe hasło lub nazwa użytkownika
@@ -41,3 +42,5 @@ serv.appCheck = Odpowiedź aplikacji
 serv.invalidMethod = Zła metoda sprawdzania serwera
 serv.serverList = Twoje serwery
 serv.editServer = Edycja serwera
+serv.view = Szczegóły serwera
+serv.weekChart = Dostępność serwera w ciągu ostatnich 7 dni

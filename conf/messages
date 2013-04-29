@@ -7,6 +7,7 @@ app.userDetails = User details
 app.actions = Actions
 app.edit = Edit
 app.delete = Delete
+app.view = View
 app.langChanged = Language changed to english
 
 auth.badpass = Invalid password or user name
@@ -41,3 +42,5 @@ serv.appCheck = Application response
 serv.invalidMethod = Invalid server checking method
 serv.serverList = Your servers
 serv.editServer = Edit server
+serv.view = Server details
+serv.weekChart = Server availability during last week

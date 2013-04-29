@@ -1,0 +1,18 @@
+@(statusList: play.api.libs.json.JsArray, language: play.api.i18n.Lang)
+
+<script type="text/javascript">
+$(function(){
+  var data = @Html(statusList.toString);
+  
+  console.log(data);
+  var barChart = d3.select('#serverView').append("div").attr("class", "barChart")
+  $(".barChart").append("<p>" + '@Messages("serv.weekChart")(language)' + "</p>")
+  barChart.selectAll("div")
+    .data(data)
+    .enter().append("div")
+    .style("width", function(d) { return (d.online ? 100 : 0) + "px"; })
+    .append("div")
+    .text(function(d) { return new Date(d.date).toDateString(); })
+    .style("color", function(d) { return "black"; }); 
+});
+</script>

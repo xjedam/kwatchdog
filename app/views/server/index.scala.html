@@ -16,7 +16,8 @@
       <tr>
         <td><a href="#">@s.name</a></td>
         <td>@s.ip</td>
-        <td><a href="@routes.Server.edit(s._id.toString())">@Messages("app.edit")(language)</a></td>
+        <td><a href="@routes.Server.edit(s._id.toString())">@Messages("app.edit")(language)</a> <a href="@routes.Server.delete(s._id.toString())">@Messages("app.delete")(language)</a>
+        <a href="@routes.Server.view(s._id.toString())">@Messages("app.view")(language)</a></td>
       </tr>
     }
   </tbody>        
