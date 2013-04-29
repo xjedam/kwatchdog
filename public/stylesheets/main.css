@@ -9,6 +9,14 @@ body {
 	padding-right: 5px;
 }
 
+.barChart {
+	width: 400px;
+}
+
+.pieChart {
+	float: right;
+}
+
 .barChart>div {
 	font: 10px sans-serif;
 	background-color: steelblue;
@@ -23,4 +31,10 @@ body {
 	margin-left: 10px;
 	position: absolute;
 	color: black;
+}
+
+#map-canvas {
+	margin-top: 40px;
+	width: 400px;
+	height: 400px;
 }
