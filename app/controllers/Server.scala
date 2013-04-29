@@ -14,6 +14,10 @@ import play.api.libs.json.JsArray
 import play.api.libs.json.JsValue
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
+import java.util.Date
+import com.mongodb.DBObject
+import com.mongodb.casbah.Imports._
+import java.util.Calendar
 
 object Server extends Controller with Secured {
   def createForm(implicit req: Request[AnyContent]) = Form( tuple(
@@ -74,7 +78,11 @@ object Server extends Controller with Secured {
   def view(id: String) = withUser(30, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => 
     model.Server.getServer(new ObjectId(id)) match {
       case Some(s: model.Server) => {
-        val arr = new JsArray(model.ServerStatus.getStatusList(MongoDBObject("server_id" -> s._id))
+        val cal = Calendar.getInstance()
+        cal.add(Calendar.DAY_OF_YEAR, -7)
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        val q: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id)
+        val arr = new JsArray(model.ServerStatus.getStatusList(q)
             .map{s => new JsObject(Seq(("date", Json.toJson(s.date)), ("online", Json.toJson(s.online))))})
         Ok(views.html.server.view(s, user, arr, language))
       }
