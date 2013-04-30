@@ -6,9 +6,11 @@ import play.api.data._
 import play.api.data.format.Formats._
 import play.api.data.Form
 import play.api.data.Forms._
+import play.api.Play.current
 import controllers.security.Secured
 import play.api.i18n.Messages
 import org.bson.types.ObjectId
+import play.api.i18n.Lang
 
 object User extends Controller with Secured {
   def createForm(implicit req: Request[AnyContent]) = Form(
@@ -32,13 +34,13 @@ object User extends Controller with Secured {
      user._id == editedContet.get._id
   }
   
-  def changeLang(lang: String) = withUser(15) { user => implicit request => 
+  def changeLang(lang: String) = optionalAuth { user => implicit request => 
     user match {
       case Some(u: model.User) => {
         model.User.saveUser(new model.User(u._id, u.login, u.role, lang, u.disabled))
         Ok(views.html.index(Messages("app.langChanged")(language), user, language))
       }
-      case _ => BadRequest(":(")
+      case _ => Ok(views.html.index(Messages("app.langChanged")(Lang(lang)), user, Lang(lang))).withCookies(Cookie(Play.langCookieName, lang))
     }
   }
 

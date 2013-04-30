@@ -26,10 +26,13 @@ trait Secured {
           maybeLangFromCookie.getOrElse(play.api.i18n.Lang.preferred(request.acceptLanguages))
         }
       }
-      
     }.getOrElse(request.acceptLanguages.headOption.getOrElse(play.api.i18n.Lang.defaultLang))
   }
-
+  
+  def optionalAuth(f: Option[model.User] => Request[AnyContent] => Result) = Action { implicit request =>
+    f(model.User.getUser(request.session.get(Security.username).getOrElse("")))(request)
+  }
+  
   def withAuth(accessLevel: Int)(f: => String => Request[AnyContent] => Result) = {
     Security.Authenticated(username, onUnauthorized) { user =>
       Action(request => f(user)(request))
