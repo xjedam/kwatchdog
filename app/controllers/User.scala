@@ -44,7 +44,7 @@ object User extends Controller with Secured {
 
   def submit = Action { implicit request =>
     createForm.bindFromRequest.fold(
-      errors => BadRequest(errors.errorsAsJson(language)),
+      errors => BadRequest(views.html.user.create(errors, language)),
       obj => {
         model.User.createUser(obj, "regular", language.country)
         Redirect(routes.Auth.login)
@@ -64,7 +64,7 @@ object User extends Controller with Secured {
   
   def update(uid: String) = withUser(30, isOwner(model.User.getUser(new ObjectId(uid)))) { user => implicit request => {
     editForm.bindFromRequest.fold(
-      errors => BadRequest(errors.errorsAsJson(language)),
+      errors => BadRequest(views.html.user.edit(errors, model.User.getUser(new ObjectId(uid)).get, user, language, user.get.role == "admin")),
       obj => {
         model.User.saveUser(new model.User(new ObjectId(uid), obj._1, obj._2, obj._3, obj._4))
         Redirect(routes.User.view(obj._1))

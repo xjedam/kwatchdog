@@ -1,9 +1,6 @@
 package controllers
 
-import play.api._
 import play.api.mvc._
-import play.api.data._
-import play.api.data.format.Formats._
 import play.api.data.Form
 import play.api.data.Forms._
 import controllers.security.Secured
@@ -14,17 +11,18 @@ import play.api.libs.json.JsArray
 import play.api.libs.json.JsValue
 import play.api.libs.json.JsObject
 import play.api.libs.json.Json
-import java.util.Date
 import com.mongodb.DBObject
 import com.mongodb.casbah.Imports._
 import java.util.Calendar
+import play.api.i18n.Lang
 
 object Server extends Controller with Secured {
-  def createForm(implicit req: Request[AnyContent]) = Form( tuple(
+
+  def createForm(implicit req: Request[AnyRef]) = Form( tuple(
     "ip" -> nonEmptyText.verifying(Messages("serv.badIP")(language), 
         ip => ip.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")),
     "name" -> nonEmptyText,
-    "location" -> nonEmptyText.verifying(Messages("serv.latdig")(language),
+    "location" -> nonEmptyText.verifying(Messages("serv.letdig")(language),
         loc => loc.matches("[\\w\\s\\d]+")),
     "details" -> text,
     "method" -> nonEmptyText.verifying(Messages("serv.invalidMethod")(language), m => model.Server.checkMethods.get(m) != None),
@@ -36,12 +34,12 @@ object Server extends Controller with Secured {
   }
     
   def create = withUser(15) { user => implicit request => 
-    Ok(views.html.server.create(createForm(request), user, language))
+    Ok(views.html.server.create(createForm, user, language))
   }
 
   def submit = withUser(15) { user => implicit request => 
     createForm.bindFromRequest.fold(
-      errors => BadRequest(errors.errorsAsJson(language)),
+      errors => BadRequest(views.html.server.create(errors, user, language)),
       obj => {
         model.Server.createServer(obj._1, obj._2, obj._3, obj._4, user.get._id, obj._5, obj._6)
         Ok(views.html.index(Messages("serv.created")(language), None, language))
@@ -62,7 +60,10 @@ object Server extends Controller with Secured {
   
   def update(id: String) = withUser(30, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => 
     createForm.bindFromRequest.fold(
-      errors => BadRequest(errors.errorsAsJson(language)),
+      errors => {
+        val oldServer = model.Server.getServer(new ObjectId(id)).get
+        BadRequest(views.html.server.edit(errors, oldServer, user, language, user.get.role == "admin"))
+      },
       obj => {
         val oldServer = model.Server.getServer(new ObjectId(id))
         model.Server.saveServer(new model.Server(new ObjectId(id), obj._1, obj._2, obj._3, obj._4, oldServer.get.user_id, obj._5, obj._6))
