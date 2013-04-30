@@ -1,4 +1,4 @@
-@(servers: Seq[model.Server], user: Option[model.User], language: play.api.i18n.Lang)
+@(servers: Seq[model.Server], user: Option[model.User], language: play.api.i18n.Lang)(implicit flash: Flash)
 
 @main(Messages("serv.serverList")(language), Messages("app.name"))(user, language) {
 

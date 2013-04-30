@@ -9,6 +9,9 @@ app.edit = Edit
 app.delete = Delete
 app.view = View
 app.langChanged = Language changed to english
+app.warning = Error!
+app.success = Success!
+app.notFound = Requested resource does not exist
 
 auth.badpass = Invalid password or user name
 auth.logout = You are now logged out
@@ -25,6 +28,7 @@ auth.loginVerify = Login must contain only letters and digits
 auth.disabled = Disabled
 auth.notAdmin = You do not have Administrator permissions
 auth.accDisabled = Account disabled
+auth.loggedout = You have been logged out
 
 serv.badIP = Must be a proper IP address
 serv.letdig = Can contain only letters or digits
@@ -45,5 +49,7 @@ serv.editServer = Edit server
 serv.view = Server details
 serv.weekChart = Server availability during last week
 serv.pieChart = Server availability during last month
+serv.deleted = Server has been removed
+serv.updated = Server has been edited
 
 validation.required = This field is required

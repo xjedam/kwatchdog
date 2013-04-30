@@ -1,4 +1,4 @@
-@(userForm: Form[(String, String, String, Boolean)], editedUser: model.User, user: Option[model.User], language: play.api.i18n.Lang, isAdmin: Boolean)
+@(userForm: Form[(String, String, String, Boolean)], editedUser: model.User, user: Option[model.User], language: play.api.i18n.Lang, isAdmin: Boolean)(implicit flash: Flash)
 
 @import helper.twitterBootstrap._
 

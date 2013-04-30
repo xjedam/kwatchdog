@@ -1,4 +1,4 @@
-@(viewedUser: model.User, user: Option[model.User], language: play.api.i18n.Lang)
+@(viewedUser: model.User, user: Option[model.User], language: play.api.i18n.Lang)(implicit flash: Flash)
 
 @main(Messages("app.userDetails")(language), Messages("app.name"))(user, language) {
 

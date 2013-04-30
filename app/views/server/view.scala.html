@@ -1,4 +1,4 @@
-@(server: model.Server, user: Option[model.User], weekStatusList: play.api.libs.json.JsArray, monthOnline: Int, monthOffline: Int, language: play.api.i18n.Lang)
+@(server: model.Server, user: Option[model.User], weekStatusList: play.api.libs.json.JsArray, monthOnline: Int, monthOffline: Int, language: play.api.i18n.Lang)(implicit flash: Flash)
 
 @main(Messages("serv.view")(language), Messages("app.name"))(user, language) {
 

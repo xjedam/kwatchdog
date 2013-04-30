@@ -9,6 +9,9 @@ app.edit = Edytuj
 app.delete = Usuń
 app.view = Pokaż
 app.langChanged = Język zmieniony na polski
+app.warning = Błąd!
+app.success = Gratulacje!
+app.notFound = Żądany zasób nie istnieje
 
 auth.badpass = Złe hasło lub nazwa użytkownika
 auth.logout = Zostałeś wylogowany
@@ -25,6 +28,7 @@ auth.loginVerify = Nazwa użytkownika musi składać się wyłącznie z liter i 
 auth.disabled = Wyłączone
 auth.notAdmin = Nie masz przywilejów administratora
 auth.accDisabled = Konto wyłączone
+auth.loggedout = Zostałeś wylogowany
 
 serv.badIP = Musisz podać poprawny adres IP
 serv.letdig = Może składać się wyłącznie z liter i numerów
@@ -45,5 +49,7 @@ serv.editServer = Edycja serwera
 serv.view = Szczegóły serwera
 serv.weekChart = Dostępność serwera w ciągu ostatnich 7 dni
 serv.pieChart = Dostępność serwera w ciągu ostatnich 30 dni
+serv.deleted = Serwer został usunięty
+serv.updated = Dane zostały zmienione
 
 validation.required = To pole jest obowiązkowe

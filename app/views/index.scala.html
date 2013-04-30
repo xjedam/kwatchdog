@@ -1,4 +1,4 @@
-@(message: String, user: Option[model.User], language: play.api.i18n.Lang)
+@(message: String, user: Option[model.User], language: play.api.i18n.Lang)(implicit flash: Flash)
 
 @main(Messages("app.name"), Messages("app.name"))(user, language) {	
 	<h1>@message</h1>

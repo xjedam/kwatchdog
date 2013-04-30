@@ -1,4 +1,4 @@
-@(uForm: Form[(String)], language: play.api.i18n.Lang)
+@(uForm: Form[(String)], language: play.api.i18n.Lang)(implicit flash: Flash)
 
 
 @main(Messages("app.newUser")(language), Messages("app.name"))(None, language) {

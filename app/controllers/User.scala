@@ -38,7 +38,7 @@ object User extends Controller with Secured {
     user match {
       case Some(u: model.User) => {
         model.User.saveUser(new model.User(u._id, u.login, u.role, lang, u.disabled))
-        Ok(views.html.index(Messages("app.langChanged")(language), user, language))
+        Ok(views.html.index(Messages("app.langChanged")(Lang(lang)), user, Lang(lang))).withCookies(Cookie(Play.langCookieName, lang))
       }
       case _ => Ok(views.html.index(Messages("app.langChanged")(Lang(lang)), user, Lang(lang))).withCookies(Cookie(Play.langCookieName, lang))
     }
@@ -60,7 +60,7 @@ object User extends Controller with Secured {
   def view(username: String) = withUser(15) { user => implicit request => {
     model.User.getUser(username) match {
       case Some(u: model.User) => Ok(views.html.user.view(u, user, language))
-      case _ => BadRequest(":(")
+      case _ => Redirect(routes.User.index).flashing("error" -> Messages("app.notFound")(language))
     }
   }}
   
@@ -76,7 +76,7 @@ object User extends Controller with Secured {
   def edit(username: String) = withUser(30, isOwner(model.User.getUser(username))) { user => implicit request => {
     model.User.getUser(username) match {
       case Some(u: model.User) => Ok(views.html.user.edit(editForm, u, user, language, user.get.role == "admin"))
-      case _ => BadRequest(":(")
+      case _ => Redirect(routes.User.index).flashing("error" -> Messages("app.notFound")(language))
     }
   }}
   
@@ -86,7 +86,7 @@ object User extends Controller with Secured {
         model.User.delete(u._id)
         Redirect(routes.User.index)
       }
-      case _ => BadRequest(":(")
+      case _ => Redirect(routes.User.index).flashing("error" -> Messages("app.notFound")(language))
     }
   }}
 }

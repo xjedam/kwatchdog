@@ -49,12 +49,12 @@ object Auth extends Controller with Secured {
 
   def authenticate = Action { implicit request =>
     loginForm.bindFromRequest.fold(
-      formWithErrors => BadRequest(formWithErrors.errorsAsJson(language)),
+      formWithErrors => BadRequest(views.html.login(formWithErrors, language)),
       user => Redirect(routes.Application.index).withSession(Security.username -> user._1))
   }
 
   def logout = Action { implicit request =>
     Redirect(routes.Auth.login).withNewSession.flashing(
-      "success" -> Messages("auth.logout")(language))
+      "success" -> Messages("auth.loggedout")(language))
   }
 }

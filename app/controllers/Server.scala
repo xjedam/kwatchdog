@@ -42,7 +42,7 @@ object Server extends Controller with Secured {
       errors => BadRequest(views.html.server.create(errors, user, language)),
       obj => {
         model.Server.createServer(obj._1, obj._2, obj._3, obj._4, user.get._id, obj._5, obj._6)
-        Ok(views.html.index(Messages("serv.created")(language), None, language))
+        Redirect(routes.Server.view(user.get._id.toString())).flashing("success" -> Messages("serv.created")(language))
       })
   }
   
@@ -67,13 +67,13 @@ object Server extends Controller with Secured {
       obj => {
         val oldServer = model.Server.getServer(new ObjectId(id))
         model.Server.saveServer(new model.Server(new ObjectId(id), obj._1, obj._2, obj._3, obj._4, oldServer.get.user_id, obj._5, obj._6))
-        Redirect(routes.Server.index)
+        Redirect(routes.Server.index).flashing("success" -> Messages("serv.updated")(language))
       })
   }
   
   def delete(id: String) = withUser(30, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => {
     model.Server.delete(new ObjectId(id))
-    Redirect(routes.Server.index)
+    Redirect(routes.Server.index).flashing("success" -> Messages("serv.deleted")(language))
   }}
   
   def view(id: String) = withUser(30, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => 
