@@ -23,5 +23,7 @@ abstract class Entity(collection: String) {
   
   def get(o: DBObject) = coll.find(o).toList
   
+  def getSort(o: DBObject, s: DBObject) = coll.find(o).sort(s).toList
+  
   def delete(id: ObjectId) = coll.remove(MongoDBObject("_id" -> id))
 }

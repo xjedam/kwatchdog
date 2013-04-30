@@ -83,7 +83,7 @@ object Server extends Controller with Secured {
         cal.add(Calendar.DAY_OF_YEAR, -7)
         cal.set(Calendar.HOUR_OF_DAY, 0)
         val q: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id)
-        val arrChart = new JsArray(model.ServerStatus.getStatusList(q)
+        val arrChart = new JsArray(model.ServerStatus.getStatusList(q, MongoDBObject("date" -> 1))
             .map{s => new JsObject(Seq(("date", Json.toJson(s.date)), ("online", Json.toJson(s.online))))})
         
         cal.add(Calendar.DAY_OF_YEAR, -23)

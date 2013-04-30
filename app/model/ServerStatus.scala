@@ -22,6 +22,6 @@ object ServerStatus extends Entity("status") {
   
   def getStatus(id: ObjectId) = mapToStatus(getOne(MongoDBObject("_id" -> id)))
   
-  def getStatusList(o: DBObject) = get(o).map{obj: DBObject => mapToStatus(Some(obj)).get}
+  def getStatusList(o: DBObject, s: DBObject = MongoDBObject.empty) = getSort(o, s).map{obj: DBObject => mapToStatus(Some(obj)).get}
   
 }
