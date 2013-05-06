@@ -13,7 +13,9 @@ abstract class Entity(collection: String) {
 
   def save(entity: DBObject) = {
     coll.save(entity, WriteConcern.NORMAL)
+    entity.get("_id")
   }
+  
 
   def getOne(searchObject: DBObject) = {
     coll.findOne(searchObject)

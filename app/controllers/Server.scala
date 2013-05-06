@@ -3,6 +3,7 @@ package controllers
 import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
+import play.api.Play.current
 import controllers.security.Secured
 import play.api.i18n.Messages
 import org.bson.types.ObjectId
@@ -17,6 +18,8 @@ import java.util.Calendar
 import play.api.i18n.Lang
 
 object Server extends Controller with Secured {
+  
+  implicit val defaultLang = Lang("pl")
 
   def createForm(implicit req: Request[AnyRef]) = Form( tuple(
     "ip" -> nonEmptyText.verifying(Messages("serv.badIP")(language), 
@@ -41,8 +44,8 @@ object Server extends Controller with Secured {
     createForm.bindFromRequest.fold(
       errors => BadRequest(views.html.server.create(errors, user, language)),
       obj => {
-        model.Server.createServer(obj._1, obj._2, obj._3, obj._4, user.get._id, obj._5, obj._6)
-        Redirect(routes.Server.view(user.get._id.toString())).flashing("success" -> Messages("serv.created")(language))
+        val id = model.Server.createServer(obj._1, obj._2, obj._3, obj._4, user.get._id, obj._5, obj._6)
+        Redirect(routes.Server.view(id.toString())).flashing("success" -> Messages("serv.created")(language))
       })
   }
   
@@ -94,7 +97,7 @@ object Server extends Controller with Secured {
           
         Ok(views.html.server.view(s, user, arrChart, countOn, countOff, language))
       }
-      case _ => BadRequest(":(")
+      case _ => Redirect(routes.Application.index).flashing("error" -> Messages("app.notFound")(language))
     }
   }
 }

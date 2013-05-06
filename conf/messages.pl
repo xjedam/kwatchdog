@@ -12,6 +12,7 @@ app.langChanged = Język zmieniony na polski
 app.warning = Błąd!
 app.success = Gratulacje!
 app.notFound = Żądany zasób nie istnieje
+app.noData = Brak danych
 
 auth.badpass = Złe hasło lub nazwa użytkownika
 auth.logout = Zostałeś wylogowany
@@ -51,5 +52,6 @@ serv.weekChart = Dostępność serwera w ciągu ostatnich 7 dni
 serv.pieChart = Dostępność serwera w ciągu ostatnich 30 dni
 serv.deleted = Serwer został usunięty
 serv.updated = Dane zostały zmienione
+serv.addrNotFound = Nie można zlokalizować adresu
 
 validation.required = To pole jest obowiązkowe

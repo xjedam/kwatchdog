@@ -1,6 +1,7 @@
 package controllers.security
 
 import play.api.mvc._
+import play.api.Application
 import controllers.routes
 import play.api.Play
 import play.api.i18n.Lang
