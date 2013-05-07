@@ -4,7 +4,6 @@
 $(function(){
   var data = @Html(statusList.toString);
   var barChart = d3.select('#serverView').append("div").attr("class", "barChart")
-  $(".barChart").append("<p>" + '@Messages("serv.weekChart")(language)' + "</p>")
   barChart.selectAll("div")
     .data(data)
     .enter().append("div")

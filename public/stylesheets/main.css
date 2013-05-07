@@ -14,7 +14,7 @@ body {
 }
 
 .pieChart {
-	float: right;
+	
 }
 
 .barChart>div {
@@ -34,7 +34,29 @@ body {
 }
 
 #map-canvas {
-	margin-top: 40px;
 	width: 400px;
 	height: 400px;
+}
+
+#serverView {
+	float: left;
+	width: 400px;
+}
+
+#serverMonthView {
+	float: right;
+	width: 600px;
+}
+
+#mapWrap {
+	float: left;
+	margin-top: 40px;
+}
+
+th {
+	padding: 5px;
+}
+
+td {
+	padding: 3px;
 }

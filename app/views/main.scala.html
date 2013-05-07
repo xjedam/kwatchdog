@@ -29,8 +29,13 @@
 		    <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Messages("serv.menu")(language)<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="@routes.Server.create">@Messages("serv.menuNew")(language)</a></li>
-            <li><a href="@routes.Server.index">@Messages("serv.serverList")(language)</a></li>
+            @user match {
+              case Some(u: model.User) => {
+                <li><a href="@routes.Server.create">@Messages("serv.menuNew")(language)</a></li>
+                <li><a href="@routes.Server.index">@Messages("serv.serverList")(language)</a></li>
+              }
+              case _ => {}
+            }
           </ul>
         </li>
 		    <li class="dropdown">

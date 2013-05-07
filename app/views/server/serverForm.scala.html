@@ -4,7 +4,7 @@
 
 @helper.form(action = submitAction) {
     
-    @helper.inputText(form("ip"), '_label -> "IP")
+    @helper.inputText(form("ip"), '_label -> Messages("serv.formIp")(language))
     @helper.inputText(form("name"), '_label -> Messages("serv.formName")(language))
     @helper.inputText(form("location"), '_label -> Messages("serv.formLoc")(language))
     @helper.inputText(form("details"), '_label -> Messages("serv.formDet")(language))

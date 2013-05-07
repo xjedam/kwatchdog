@@ -6,56 +6,20 @@
 
   <h2>@Messages("app.userDetails")(language)</h2>
   @helper.form(action = routes.User.update(editedUser._id.toString())) {
-    <div id="userEdit">
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <div class="adminArea">
-                @helper.input(userForm("login")){ (id, name, value, args) => 
-                  <input type="text" id="login" name="login" value="@editedUser.login" >
-                }
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="adminArea">
-                @helper.input(userForm("role"), '_label -> Messages("auth.role")(language)){ (id, name, value, args) => 
-                  <select name="@name" id="@id">
-                  @model.User.roles.keySet.map { role => 
-                    @if(role == editedUser.role) {
-                      <option selected value=@role>@role</option>
-                    } else {
-                      <option value=@role>@role</option>
-                    }
-                  }
-                }
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>@helper.input(userForm("lang"), '_label -> Messages("auth.lang")(language)){ (id, name, value, args) => 
-              <input type="text" id="lang" name="lang" value="@editedUser.lang" >
-            }</td>
-          </tr>
-          <tr>
-            <td>
-              <div class="adminArea">
-                @helper.input(userForm("disabled"), '_help -> "", '_label -> Messages("auth.disabled")(language)){ (id, name, value, args) => 
-                  <input type="checkbox" id="disabled" name="disabled" value="true"
-                      @if(editedUser.disabled) {
-                        checked
-                      }
-                  >
-                }
-              </div>
-            </td>
-          </tr>
-        </tbody>  
-      </table>
-      <input id ="Submit" type="submit" value='@Messages("app.submit")(language)' />
+    @helper.inputText(userForm("login"))
+    
+    <div class="adminArea">
+      @helper.select(field = userForm("role"),
+        options = model.User.roles.keySet.map{s => (s, s)}(collection.breakOut): Seq[(String, String)],
+        '_label -> Messages("auth.role")(language)
+        )
     </div>
+    @helper.inputText(userForm("lang"), '_label -> Messages("auth.lang")(language))
+    <div class="adminArea">
+      @helper.checkbox(userForm("disabled"), '_help -> "", '_label -> Messages("auth.disabled")(language))
+    </div>
+
+    <input id ="Submit" type="submit" value='@Messages("app.submit")(language)' />
   }
   <script type="text/javascript">
   @if(!isAdmin) {

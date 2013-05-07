@@ -31,6 +31,9 @@ auth.disabled = Wyłączone
 auth.notAdmin = Nie masz przywilejów administratora
 auth.accDisabled = Konto wyłączone
 auth.loggedout = Zostałeś wylogowany
+auth.userCreated = Utworzono nowe konto
+auth.userDeleted = Konto usunięto
+auth.userEdited = Zmiany zostały zapisane
 
 serv.badIP = Musisz podać poprawny adres IP
 serv.letdig = Może składać się wyłącznie z liter i cyfr
@@ -43,7 +46,7 @@ serv.formName = Nazwa serwera
 serv.formLoc = Lokacja serwera
 serv.formDet = Opis
 serv.formMeth = Metoda sprawdzania
-serv.formPeriod = Rozstęp sprawdzania
+serv.formPeriod = Przerwa między sprawdzaniem
 serv.pingCheck = Sprawdzenie ping
 serv.logCheck = Sprawdzenie logów
 serv.appCheck = Odpowiedź aplikacji
@@ -56,6 +59,7 @@ serv.pieChart = Dostępność serwera w ciągu ostatnich 30 dni
 serv.deleted = Serwer został usunięty
 serv.updated = Dane zostały zmienione
 serv.addrNotFound = Nie można zlokalizować adresu
+serv.locationMap = Położenie serwera
 
 validation.required = To pole jest wymagane
 validation.number = Musisz podać liczbę

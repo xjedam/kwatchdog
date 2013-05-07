@@ -1,24 +1,27 @@
-@(server: model.Server, user: Option[model.User], weekStatusList: play.api.libs.json.JsArray, monthOnline: Int, monthOffline: Int, language: play.api.i18n.Lang)(implicit flash: Flash)
+@(server: model.Server, user: Option[model.User], weekStatusList: play.api.libs.json.JsArray, monthAv: com.mongodb.BasicDBList, language: play.api.i18n.Lang)(implicit flash: Flash)
 
 @main(Messages("serv.view")(language), Messages("app.name"))(user, language) {
 
   <h2>@Messages("serv.view")(language) - @server.name</h2>
   <div id="serverView">
+    <p>@Messages("serv.weekChart")(language)</p>
     @if(weekStatusList.value.length != 0) {
       @serverStatus.weekChart(weekStatusList, language)
     } else {
       @Messages("app.noData")(language)
     }
   </div>
-  <div id="mapWrap">
-    <div id="map-canvas"/>
-  </div>
   <div id="serverMonthView">
-    @if(monthOnline == 0 && monthOffline == 0) {
+    <p>@Messages("serv.pieChart")(language)</p>
+    @if(monthAv.isEmpty()) {
       @Messages("app.noData")(language)
     } else {
-      @serverStatus.pieChart(monthOnline, monthOffline, language)
+      @serverStatus.pieChart(monthAv, language)
     }
+  </div>
+  <div id="mapWrap">
+    <p>@Messages("serv.locationMap")(language)</p>
+    <div id="map-canvas"></div>
   </div>
   
   <script src="@routes.Assets.at("javascripts/d3.v3.min.js")" type="text/javascript"></script>

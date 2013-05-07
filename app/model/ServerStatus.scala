@@ -14,6 +14,8 @@ case class ServerStatus (
     
 object ServerStatus extends Entity("status") {
   
+  val entityName = "status"
+  
   def mapToStatus(o: Option[DBObject]) = o match {
     case Some(s: DBObject) => Some(new ServerStatus(s.get("_id").asInstanceOf[ObjectId], s.get("server_id").asInstanceOf[ObjectId],
         s.get("date").asInstanceOf[Date], s.get("online").asInstanceOf[Boolean], s.get("info").asInstanceOf[String]))

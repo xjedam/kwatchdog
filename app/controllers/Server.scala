@@ -57,7 +57,7 @@ object Server extends Controller with Secured {
     model.Server.getServer(new ObjectId(id)) match {
       case Some(s: model.Server) => Ok(views.html.server.edit(createForm.fill(s.ip, s.name, s.location, s.details, s.method, s.period.toString()),
           s, user, language, user.get.role == "admin"))
-      case _ => BadRequest(":(")
+      case _ => Redirect(routes.Application.index).flashing("error" -> Messages("app.notFound")(language))
     }
   }
   
@@ -90,12 +90,20 @@ object Server extends Controller with Secured {
             .map{s => new JsObject(Seq(("date", Json.toJson(s.date)), ("online", Json.toJson(s.online))))})
         
         cal.add(Calendar.DAY_OF_YEAR, -23)
-        val qonline: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id, "online" -> true)
+        val aggr1 = new MongoDBList()
+        aggr1 += MongoDBObject("$match" -> (("date" $gte cal.getTime()) ++ ("server_id" -> s._id)))
+        aggr1 += MongoDBObject("$group" -> MongoDBObject(
+          "_id" -> "$online",
+          "count" -> MongoDBObject("$sum" -> 1)
+          ))
+        aggr1 += MongoDBObject("$sort" -> MongoDBObject("_id" -> 1))
+        val res = model.Server.aggregate(model.ServerStatus.entityName, aggr1)
+        /*val qonline: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id, "online" -> true)
         val qoffline: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id, "online" -> false)
-        val countOn = model.ServerStatus.getStatusList(qonline).length
-        val countOff = model.ServerStatus.getStatusList(qoffline).length
+        val countOn = res.head
+        val countOff = model.ServerStatus.getStatusList(qoffline).length*/
           
-        Ok(views.html.server.view(s, user, arrChart, countOn, countOff, language))
+        Ok(views.html.server.view(s, user, arrChart, res.asInstanceOf[BasicDBList], language))
       }
       case _ => Redirect(routes.Application.index).flashing("error" -> Messages("app.notFound")(language))
     }

@@ -1,16 +1,16 @@
-@(online: Int, offline: Int, language: play.api.i18n.Lang)
+@(monthAv: com.mongodb.BasicDBList, language: play.api.i18n.Lang)
 
 <script type="text/javascript">
 $(function(){
-  var data = [{"status": "online", "count": @online}, {"status": "offline", "count": @offline}]
-  var pieChart = d3.select('#serverView').append("div").attr("class", "pieChart")
-  $(".pieChart").append("<p>" + '@Messages("serv.pieChart")(language)' + "</p>")
-  var width = 700,
+  var data = @Html(monthAv.toString().replaceAll("true", "\"online\"").replaceAll("false", "\"offline\""))
+  console.log(data)
+  var pieChart = d3.select('#serverMonthView').append("div").attr("class", "pieChart")
+  var width = 600,
       height = 500,
       radius = Math.min(width, height) / 2;
   
   var color = d3.scale.ordinal()
-      .range(["green", "#b81212"]);
+      .range(["#b81212", "green"]);
   
   var arc = d3.svg.arc()
       .outerRadius(radius - 10)
@@ -33,12 +33,12 @@ $(function(){
 
   g.append("path")
       .attr("d", arc)
-      .style("fill", function(d) { return color(d.data.status); });
+      .style("fill", function(d) { return color(d.data._id); });
 
   g.append("text")
       .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
       .attr("dy", ".35em")
       .style("text-anchor", "middle")
-      .text(function(d) { return d.data.status; });
+      .text(function(d) { return d.data._id; });
 });
 </script>

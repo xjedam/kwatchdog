@@ -49,7 +49,7 @@ object User extends Controller with Secured {
       errors => BadRequest(views.html.user.create(errors, language)),
       obj => {
         model.User.createUser(obj, "regular", language.country)
-        Redirect(routes.Auth.login)
+        Redirect(routes.Auth.login).flashing("success" -> Messages("auth.userCreated")(language))
       })
   }
   
@@ -69,13 +69,13 @@ object User extends Controller with Secured {
       errors => BadRequest(views.html.user.edit(errors, model.User.getUser(new ObjectId(uid)).get, user, language, user.get.role == "admin")),
       obj => {
         model.User.saveUser(new model.User(new ObjectId(uid), obj._1, obj._2, obj._3, obj._4))
-        Redirect(routes.User.view(obj._1))
+        Redirect(routes.User.view(obj._1)).flashing("success" -> Messages("auth.userEdited")(language))
       })
   }}
   
   def edit(username: String) = withUser(30, isOwner(model.User.getUser(username))) { user => implicit request => {
     model.User.getUser(username) match {
-      case Some(u: model.User) => Ok(views.html.user.edit(editForm, u, user, language, user.get.role == "admin"))
+      case Some(u: model.User) => Ok(views.html.user.edit(editForm.fill(u.login, u.role, u.lang, u.disabled), u, user, language, user.get.role == "admin"))
       case _ => Redirect(routes.User.index).flashing("error" -> Messages("app.notFound")(language))
     }
   }}
@@ -84,7 +84,7 @@ object User extends Controller with Secured {
     model.User.getUser(username) match {
       case Some(u: model.User) => {
         model.User.delete(u._id)
-        Redirect(routes.User.index)
+        Redirect(routes.User.index).flashing("success" -> Messages("auth.userDeleted")(language))
       }
       case _ => Redirect(routes.User.index).flashing("error" -> Messages("app.notFound")(language))
     }
