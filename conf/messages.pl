@@ -13,6 +13,7 @@ app.warning = Błąd!
 app.success = Gratulacje!
 app.notFound = Żądany zasób nie istnieje
 app.noData = Brak danych
+app.submit = Wyślij
 
 auth.badpass = Złe hasło lub nazwa użytkownika
 auth.logout = Zostałeś wylogowany
@@ -32,7 +33,7 @@ auth.accDisabled = Konto wyłączone
 auth.loggedout = Zostałeś wylogowany
 
 serv.badIP = Musisz podać poprawny adres IP
-serv.letdig = Może składać się wyłącznie z liter i numerów
+serv.letdig = Może składać się wyłącznie z liter i cyfr
 serv.created = Nowy serwer został dodany
 serv.menu = Serwery
 serv.menuNew = Nowy serwer
@@ -41,6 +42,8 @@ serv.formIp = Adres IP
 serv.formName = Nazwa serwera
 serv.formLoc = Lokacja serwera
 serv.formDet = Opis
+serv.formMeth = Metoda sprawdzania
+serv.formPeriod = Rozstęp sprawdzania
 serv.pingCheck = Sprawdzenie ping
 serv.logCheck = Sprawdzenie logów
 serv.appCheck = Odpowiedź aplikacji
@@ -54,4 +57,6 @@ serv.deleted = Serwer został usunięty
 serv.updated = Dane zostały zmienione
 serv.addrNotFound = Nie można zlokalizować adresu
 
-validation.required = To pole jest obowiązkowe
+validation.required = To pole jest wymagane
+validation.number = Musisz podać liczbę
+validation.2letlang = Musisz podac 2 literowy skót kraju

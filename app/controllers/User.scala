@@ -14,15 +14,15 @@ import play.api.i18n.Lang
 
 object User extends Controller with Secured {
   def createForm(implicit req: Request[AnyContent]) = Form(
-    "login" -> nonEmptyText.verifying(Messages("auth.loginVerify")(language),
+    "login" -> text.verifying(Messages("validation.required")(language), !_.isEmpty).verifying(Messages("auth.loginVerify")(language),
         log => log.matches("[@.\\w\\d]+")))
     
   def editForm(implicit req: Request[AnyContent]) = Form( tuple(
-    "login" -> nonEmptyText.verifying(Messages("auth.loginVerify")(language),
+    "login" -> text.verifying(Messages("validation.required")(language), !_.isEmpty).verifying(Messages("auth.loginVerify")(language),
         log => log.matches("[@.\\w\\d]+")).verifying(Messages("auth.notAdmin")(language), _ => model.User.isAdmin(req.session.get(Security.username).get)),
-    "role" -> nonEmptyText.verifying(Messages("auth.loginVerify")(language),
+    "role" -> text.verifying(Messages("validation.required")(language), !_.isEmpty).verifying(Messages("auth.loginVerify")(language),
         role => model.User.roles.keySet.contains(role)).verifying(Messages("auth.notAdmin")(language), _ => model.User.isAdmin(req.session.get(Security.username).get)),
-    "lang" -> nonEmptyText(2, 2),
+    "lang" -> text.verifying(Messages("validation.2letlang")(language), _.length() == 2),
     "disabled" -> boolean.verifying(Messages("auth.notAdmin")(language), _ => model.User.isAdmin(req.session.get(Security.username).get))
         ))
     

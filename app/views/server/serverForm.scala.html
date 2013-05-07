@@ -1,18 +1,18 @@
-@(form: Form[(String, String, String, String, String, Int)], language: play.api.i18n.Lang)
+@(form: Form[(String, String, String, String, String, String)], language: play.api.i18n.Lang, submitAction: play.api.mvc.Call)
 
 @import helper.twitterBootstrap._
 
-@helper.form(action = routes.Server.submit) {
+@helper.form(action = submitAction) {
     
-    @helper.inputText(form("ip"))
-    @helper.inputText(form("name"))
-    @helper.inputText(form("location"))
-    @helper.inputText(form("details"))
+    @helper.inputText(form("ip"), '_label -> "IP")
+    @helper.inputText(form("name"), '_label -> Messages("serv.formName")(language))
+    @helper.inputText(form("location"), '_label -> Messages("serv.formLoc")(language))
+    @helper.inputText(form("details"), '_label -> Messages("serv.formDet")(language))
     @helper.select(field = form("method"), options = model.Server.checkMethods.map{
         case (key, value) => (key, Messages(value)(language))
-      }(collection.breakOut): Seq[(String, String)])
-    @helper.inputText(form("period"))
+      }(collection.breakOut): Seq[(String, String)], '_label -> Messages("serv.formMeth")(language))
+    @helper.inputText(form("period"), '_label -> Messages("serv.formPeriod")(language))
     <br />
-    <input id ="Submit" type="submit" value="Submit" />
+    <input id ="Submit" type="submit" value='@Messages("app.submit")(language)' />
     
 }

@@ -13,6 +13,7 @@ app.warning = Error!
 app.success = Success!
 app.notFound = Requested resource does not exist
 app.noData = No data found
+app.submit = Submit
 
 auth.badpass = Invalid password or user name
 auth.logout = You are now logged out
@@ -41,6 +42,8 @@ serv.formIp = IP address
 serv.formName = Server name
 serv.formLoc = Server location
 serv.formDet = Server details
+serv.formMeth = Checking method
+serv.formPeriod = Checking interval
 serv.pingCheck = Ping check
 serv.logCheck = Logs check
 serv.appCheck = Application response
@@ -55,3 +58,5 @@ serv.updated = Server has been edited
 serv.addrNotFound = Cannot locate address
 
 validation.required = This field is required
+validation.number = Must be a number
+validation.2letlang = Must be a 2 letter country tag

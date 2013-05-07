@@ -1,9 +1,9 @@
-@(form: Form[(String, String, String, String, String, Int)], user: Option[model.User], language: play.api.i18n.Lang)(implicit flash: Flash)
+@(form: Form[(String, String, String, String, String, String)], user: Option[model.User], language: play.api.i18n.Lang)(implicit flash: Flash)
 
 
 @main(Messages("app.newServer")(language), Messages("app.name"))(user, language) {
 
         <h2>@Messages("serv.newServer")(language)</h2>
 
-        @serverForm(form, language)
+        @serverForm(form, language, routes.Server.submit)
 }

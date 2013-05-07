@@ -21,7 +21,7 @@
           <tr>
             <td>
               <div class="adminArea">
-                @helper.input(userForm("role")){ (id, name, value, args) => 
+                @helper.input(userForm("role"), '_label -> Messages("auth.role")(language)){ (id, name, value, args) => 
                   <select name="@name" id="@id">
                   @model.User.roles.keySet.map { role => 
                     @if(role == editedUser.role) {
@@ -35,14 +35,14 @@
             </td>
           </tr>
           <tr>
-            <td>@helper.input(userForm("lang")){ (id, name, value, args) => 
+            <td>@helper.input(userForm("lang"), '_label -> Messages("auth.lang")(language)){ (id, name, value, args) => 
               <input type="text" id="lang" name="lang" value="@editedUser.lang" >
             }</td>
           </tr>
           <tr>
             <td>
               <div class="adminArea">
-                @helper.input(userForm("disabled")){ (id, name, value, args) => 
+                @helper.input(userForm("disabled"), '_help -> "", '_label -> Messages("auth.disabled")(language)){ (id, name, value, args) => 
                   <input type="checkbox" id="disabled" name="disabled" value="true"
                       @if(editedUser.disabled) {
                         checked
@@ -54,7 +54,7 @@
           </tr>
         </tbody>  
       </table>
-      <input id ="Submit" type="submit" value="Submit" />
+      <input id ="Submit" type="submit" value='@Messages("app.submit")(language)' />
     </div>
   }
   <script type="text/javascript">

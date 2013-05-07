@@ -11,7 +11,7 @@
 		    </p>
 		}
 	    @helper.inputText(form("login"))
-	    @helper.inputPassword(form("password"))
+	    @helper.inputPassword(form("password"), '_label -> Messages("auth.formPassword")(language))
 	    <br />
 	    <input id ="Login" type="submit" value='@Messages("auth.login")(language)' />
 	    

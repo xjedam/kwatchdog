@@ -22,14 +22,14 @@ object Server extends Controller with Secured {
   implicit val defaultLang = Lang("pl")
 
   def createForm(implicit req: Request[AnyRef]) = Form( tuple(
-    "ip" -> nonEmptyText.verifying(Messages("serv.badIP")(language), 
+    "ip" -> text.verifying(Messages("validation.required")(language), !_.isEmpty).verifying(Messages("serv.badIP")(language), 
         ip => ip.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")),
-    "name" -> nonEmptyText,
-    "location" -> nonEmptyText.verifying(Messages("serv.letdig")(language),
+    "name" -> text.verifying(Messages("validation.required")(language), !_.isEmpty),
+    "location" -> text.verifying(Messages("validation.required")(language), !_.isEmpty).verifying(Messages("serv.letdig")(language),
         loc => loc.matches("[\\w\\s\\d]+")),
     "details" -> text,
-    "method" -> nonEmptyText.verifying(Messages("serv.invalidMethod")(language), m => model.Server.checkMethods.get(m) != None),
-    "period" -> number
+    "method" -> text.verifying(Messages("validation.required")(language), !_.isEmpty).verifying(Messages("serv.invalidMethod")(language), m => model.Server.checkMethods.get(m) != None),
+    "period" -> text.verifying(Messages("validation.number")(language), _.matches("[0-9]+"))
     ))
     
   def isOwner(editedContet: Option[model.Server]) = { user: model.User =>
@@ -44,7 +44,7 @@ object Server extends Controller with Secured {
     createForm.bindFromRequest.fold(
       errors => BadRequest(views.html.server.create(errors, user, language)),
       obj => {
-        val id = model.Server.createServer(obj._1, obj._2, obj._3, obj._4, user.get._id, obj._5, obj._6)
+        val id = model.Server.createServer(obj._1, obj._2, obj._3, obj._4, user.get._id, obj._5, obj._6.toInt)
         Redirect(routes.Server.view(id.toString())).flashing("success" -> Messages("serv.created")(language))
       })
   }
@@ -55,7 +55,7 @@ object Server extends Controller with Secured {
   
   def edit(id: String) = withUser(30, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => 
     model.Server.getServer(new ObjectId(id)) match {
-      case Some(s: model.Server) => Ok(views.html.server.edit(createForm.fill(s.ip, s.name, s.location, s.details, s.method, s.period),
+      case Some(s: model.Server) => Ok(views.html.server.edit(createForm.fill(s.ip, s.name, s.location, s.details, s.method, s.period.toString()),
           s, user, language, user.get.role == "admin"))
       case _ => BadRequest(":(")
     }
@@ -69,7 +69,7 @@ object Server extends Controller with Secured {
       },
       obj => {
         val oldServer = model.Server.getServer(new ObjectId(id))
-        model.Server.saveServer(new model.Server(new ObjectId(id), obj._1, obj._2, obj._3, obj._4, oldServer.get.user_id, obj._5, obj._6))
+        model.Server.saveServer(new model.Server(new ObjectId(id), obj._1, obj._2, obj._3, obj._4, oldServer.get.user_id, obj._5, obj._6.toInt))
         Redirect(routes.Server.index).flashing("success" -> Messages("serv.updated")(language))
       })
   }
