@@ -29,7 +29,7 @@ object Server extends Entity("servers") {
   
   def getAllServers = get(MongoDBObject.empty).map{obj: DBObject => mapToServer(Some(obj)).get}
   
-  def getUsersServer(uid: ObjectId) = get(MongoDBObject("user_id" -> uid)).map{obj: DBObject => mapToServer(Some(obj)).get}
+  def getUsersServers(uid: ObjectId) = get(MongoDBObject("user_id" -> uid)).map{obj: DBObject => mapToServer(Some(obj)).get}
 
   def createServer(ip: String, name: String, location: String, details: String, uid: ObjectId, method: String, period: Int) = {
     save(MongoDBObject("ip" -> ip, "name" -> name, "location" -> location, "details" -> details, "user_id" -> uid,

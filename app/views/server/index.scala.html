@@ -1,8 +1,8 @@
-@(servers: Seq[model.Server], user: Option[model.User], language: play.api.i18n.Lang)(implicit flash: Flash)
+@(servers: Seq[model.Server], user: Option[model.User], language: play.api.i18n.Lang, title: String)(implicit flash: Flash)
 
-@main(Messages("serv.serverList")(language), Messages("app.name"))(user, language) {
+@main(title, Messages("app.name"))(user, language) {
 
-  <h2>@Messages("serv.serverList")(language)</h2>
+  <h2>@title</h2>
   <table class="table-striped table-bordered" id="usersTable">
   <thead>
     <tr>

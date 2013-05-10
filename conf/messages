@@ -53,6 +53,7 @@ serv.logCheck = Logs check
 serv.appCheck = Application response
 serv.invalidMethod = Invalid server checking method
 serv.serverList = All servers
+serv.serverUserList = Your servers
 serv.editServer = Edit server
 serv.view = Server details
 serv.weekChart = Server availability during last week

@@ -53,6 +53,7 @@ serv.logCheck = Sprawdzenie logów
 serv.appCheck = Odpowiedź aplikacji
 serv.invalidMethod = Zła metoda sprawdzania serwera
 serv.serverList = Wszystkie serwery
+serv.serverUserList = Twoje serwery
 serv.editServer = Edycja serwera
 serv.view = Szczegóły serwera
 serv.weekChart = Dostępność serwera w ciągu ostatnich 7 dni

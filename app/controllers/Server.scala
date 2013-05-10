@@ -50,7 +50,11 @@ object Server extends Controller with Secured {
   }
   
   def index = withUser(model.User.roles.get("viewer").get) { user => implicit request => 
-    Ok(views.html.server.index(model.Server.getAllServers, user, language))
+    Ok(views.html.server.index(model.Server.getAllServers, user, language, Messages("serv.serverList")(language)))
+  }
+  
+  def indexUser(uid: String) = withUser(model.User.roles.get("viewer").get) { user => implicit request => 
+    Ok(views.html.server.index(model.Server.getUsersServers(new ObjectId(uid)), user, language, Messages("serv.serverUserList")(language)))
   }
   
   def edit(id: String) = withUser(model.User.roles.get("admin").get, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => 
