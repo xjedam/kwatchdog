@@ -36,11 +36,11 @@ object Server extends Controller with Secured {
      user._id == editedContet.get.user_id
   }
     
-  def create = withUser(15) { user => implicit request => 
+  def create = withUser(model.User.roles.get("regular").get) { user => implicit request => 
     Ok(views.html.server.create(createForm, user, language))
   }
 
-  def submit = withUser(15) { user => implicit request => 
+  def submit = withUser(model.User.roles.get("regular").get) { user => implicit request => 
     createForm.bindFromRequest.fold(
       errors => BadRequest(views.html.server.create(errors, user, language)),
       obj => {
@@ -49,11 +49,11 @@ object Server extends Controller with Secured {
       })
   }
   
-  def index = withUser(15) { user => implicit request => 
-    Ok(views.html.server.index(model.Server.getUsersServer(user.get._id), user, language))
+  def index = withUser(model.User.roles.get("viewer").get) { user => implicit request => 
+    Ok(views.html.server.index(model.Server.getAllServers, user, language))
   }
   
-  def edit(id: String) = withUser(30, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => 
+  def edit(id: String) = withUser(model.User.roles.get("admin").get, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => 
     model.Server.getServer(new ObjectId(id)) match {
       case Some(s: model.Server) => Ok(views.html.server.edit(createForm.fill(s.ip, s.name, s.location, s.details, s.method, s.period.toString()),
           s, user, language, user.get.role == "admin"))
@@ -61,7 +61,7 @@ object Server extends Controller with Secured {
     }
   }
   
-  def update(id: String) = withUser(30, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => 
+  def update(id: String) = withUser(model.User.roles.get("admin").get, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => 
     createForm.bindFromRequest.fold(
       errors => {
         val oldServer = model.Server.getServer(new ObjectId(id)).get
@@ -74,22 +74,22 @@ object Server extends Controller with Secured {
       })
   }
   
-  def delete(id: String) = withUser(30, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => {
+  def delete(id: String) = withUser(model.User.roles.get("admin").get, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => {
     model.Server.delete(new ObjectId(id))
     Redirect(routes.Server.index).flashing("success" -> Messages("serv.deleted")(language))
   }}
   
-  def view(id: String) = withUser(30, isOwner(model.Server.getServer(new ObjectId(id)))) { user => implicit request => 
+  def view(id: String) = withUser(model.User.roles.get("viewer").get) { user => implicit request => 
     model.Server.getServer(new ObjectId(id)) match {
       case Some(s: model.Server) => {
         val cal = Calendar.getInstance()
-        cal.add(Calendar.DAY_OF_YEAR, -7)
+        cal.add(Calendar.DAY_OF_YEAR, -6)
         cal.set(Calendar.HOUR_OF_DAY, 0)
         val q: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id)
         val arrChart = new JsArray(model.ServerStatus.getStatusList(q, MongoDBObject("date" -> 1))
             .map{s => new JsObject(Seq(("date", Json.toJson(s.date)), ("online", Json.toJson(s.online))))})
         
-        cal.add(Calendar.DAY_OF_YEAR, -23)
+        cal.add(Calendar.DAY_OF_YEAR, -24)
         val aggr1 = new MongoDBList()
         aggr1 += MongoDBObject("$match" -> (("date" $gte cal.getTime()) ++ ("server_id" -> s._id)))
         aggr1 += MongoDBObject("$group" -> MongoDBObject(
@@ -98,11 +98,7 @@ object Server extends Controller with Secured {
           ))
         aggr1 += MongoDBObject("$sort" -> MongoDBObject("_id" -> 1))
         val res = model.Server.aggregate(model.ServerStatus.entityName, aggr1)
-        /*val qonline: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id, "online" -> true)
-        val qoffline: DBObject = ("date" $gte cal.getTime()) ++ ("server_id" -> s._id, "online" -> false)
-        val countOn = res.head
-        val countOff = model.ServerStatus.getStatusList(qoffline).length*/
-          
+
         Ok(views.html.server.view(s, user, arrChart, res.asInstanceOf[BasicDBList], language))
       }
       case _ => Redirect(routes.Application.index).flashing("error" -> Messages("app.notFound")(language))

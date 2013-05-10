@@ -26,18 +26,20 @@
 		<div class="nav-collapse collapse navbar-responsive-collapse">
 		  <ul class="nav">
 		    <li class="active"><a href="@routes.Application.index">@Messages("app.menuHome")(language)</a></li>
-		    <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Messages("serv.menu")(language)<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            @user match {
-              case Some(u: model.User) => {
+		    @user match {
+        case Some(u: model.User) => {
+  		    <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Messages("serv.menu")(language)<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              @if(views.Auth.hasPermission(u, "regular")) {
                 <li><a href="@routes.Server.create">@Messages("serv.menuNew")(language)</a></li>
-                <li><a href="@routes.Server.index">@Messages("serv.serverList")(language)</a></li>
               }
-              case _ => {}
-            }
-          </ul>
-        </li>
+              <li><a href="@routes.Server.index">@Messages("serv.serverList")(language)</a></li>
+            </ul>
+          </li>
+          }
+          case _ => {}
+        }
 		    <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">@Messages("auth.account")(language)<b class="caret"></b></a>
             <ul class="dropdown-menu">

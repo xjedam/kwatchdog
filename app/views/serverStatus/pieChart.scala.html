@@ -3,7 +3,7 @@
 <script type="text/javascript">
 $(function(){
   var data = @Html(monthAv.toString().replaceAll("true", "\"online\"").replaceAll("false", "\"offline\""))
-  console.log(data)
+  var total = data[0].count + data[1].count
   var pieChart = d3.select('#serverMonthView').append("div").attr("class", "pieChart")
   var width = 600,
       height = 500,
@@ -39,6 +39,6 @@ $(function(){
       .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
       .attr("dy", ".35em")
       .style("text-anchor", "middle")
-      .text(function(d) { return d.data._id; });
+      .text(function(d) { return d.data._id + "(" + Math.round((d.data.count / total) * 10000) / 100 + "%)"; });
 });
 </script>

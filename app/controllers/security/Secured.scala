@@ -5,27 +5,30 @@ import play.api.Application
 import controllers.routes
 import play.api.Play
 import play.api.i18n.Lang
+import play.api.Play.current
 
 trait Secured {
 
   def username(request: RequestHeader) = request.session.get(Security.username)
 
   def onUnauthorized(request: RequestHeader) = Results.Forbidden
+  
+  def defLang(implicit request: RequestHeader) = {
+    val maybeLangFromCookie = request.cookies.get(Play.langCookieName).flatMap(c => Lang.get(c.value))
+    maybeLangFromCookie.getOrElse(play.api.i18n.Lang.preferred(request.acceptLanguages))
+  }
 
   implicit def language(implicit request: RequestHeader) = {
     play.api.Play.maybeApplication.map { implicit app =>
       request.session.get(Security.username) match {
         case Some(uname: String) => model.User.getUser(uname) match {
-          case Some(user: model.User) => Lang(user.lang)
-          case _ => {
-            val maybeLangFromCookie = request.cookies.get(Play.langCookieName).flatMap(c => Lang.get(c.value))
-            maybeLangFromCookie.getOrElse(play.api.i18n.Lang.preferred(request.acceptLanguages))
-          }
+          case Some(user: model.User) => if(user.lang.length == 2) 
+            Lang(user.lang) 
+          else 
+            defLang
+          case _ => defLang
         }
-        case _ => {
-          val maybeLangFromCookie = request.cookies.get(Play.langCookieName).flatMap(c => Lang.get(c.value))
-          maybeLangFromCookie.getOrElse(play.api.i18n.Lang.preferred(request.acceptLanguages))
-        }
+        case _ => defLang
       }
     }.getOrElse(request.acceptLanguages.headOption.getOrElse(play.api.i18n.Lang.defaultLang))
   }

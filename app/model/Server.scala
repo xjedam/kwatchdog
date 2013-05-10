@@ -27,6 +27,8 @@ object Server extends Entity("servers") {
 
   def getServer(id: ObjectId) = mapToServer(getOne(MongoDBObject("_id" -> id)))
   
+  def getAllServers = get(MongoDBObject.empty).map{obj: DBObject => mapToServer(Some(obj)).get}
+  
   def getUsersServer(uid: ObjectId) = get(MongoDBObject("user_id" -> uid)).map{obj: DBObject => mapToServer(Some(obj)).get}
 
   def createServer(ip: String, name: String, location: String, details: String, uid: ObjectId, method: String, period: Int) = {

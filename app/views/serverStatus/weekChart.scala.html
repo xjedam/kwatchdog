@@ -3,6 +3,7 @@
 <script type="text/javascript">
 $(function(){
   var data = @Html(statusList.toString);
+  //console.log(JSON.stringify(data));
   var barChart = d3.select('#serverView').append("div").attr("class", "barChart")
   barChart.selectAll("div")
     .data(data)
