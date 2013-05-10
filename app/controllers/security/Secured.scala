@@ -6,12 +6,14 @@ import controllers.routes
 import play.api.Play
 import play.api.i18n.Lang
 import play.api.Play.current
+import play.api.mvc.Results._
+import play.api.i18n.Messages
 
 trait Secured {
 
   def username(request: RequestHeader) = request.session.get(Security.username)
 
-  def onUnauthorized(request: RequestHeader) = Results.Forbidden
+  def onUnauthorized(request: RequestHeader) = Redirect(routes.Application.index).flashing("error" -> Messages("app.forbidden")(language(request)))
   
   def defLang(implicit request: RequestHeader) = {
     val maybeLangFromCookie = request.cookies.get(Play.langCookieName).flatMap(c => Lang.get(c.value))

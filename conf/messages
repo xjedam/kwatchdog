@@ -14,6 +14,7 @@ app.success = Success!
 app.notFound = Requested resource does not exist
 app.noData = No data found
 app.submit = Submit
+app.forbidden = You do not have permissions to view this resource
 
 auth.badpass = Invalid password or user name
 auth.logout = You are now logged out

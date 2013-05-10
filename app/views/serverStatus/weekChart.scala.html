@@ -1,16 +1,70 @@
 @(statusList: play.api.libs.json.JsArray, language: play.api.i18n.Lang)
 
 <script type="text/javascript">
-$(function(){
-  var data = @Html(statusList.toString);
-  //console.log(JSON.stringify(data));
-  var barChart = d3.select('#serverView').append("div").attr("class", "barChart")
-  barChart.selectAll("div")
+  $(function(){
+    var data = @Html(statusList.toString);
+    //console.log(JSON.stringify(data));
+    var data = jQuery.map(data, function(el, i) {
+      el.date = new Date(new Date(el.date).setHours(0));
+      el.online = el.online? 1 : 0;
+      return el;
+  });
+  console.log(JSON.stringify(data));
+  
+  var margin = {top: 10, right: 10, bottom: 70, left: 60},
+    width = 400 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+  
+  
+  var x = d3.time.scale.utc()
+    .domain([new Date((new Date).getTime() - 7*24*3600*1000), new Date()])
+    .range([0, width]);
+  
+  var y = d3.scale.linear()
+    .domain([1,0])
+    .range([0, height]);
+  
+  var xAxis = d3.svg.axis()
+    .scale(x)
+    .ticks(d3.time.days, 1)
+    .tickFormat(d3.time.format("%m-%d"))
+    .orient("bottom");
+  
+  var yAxis = d3.svg.axis()
+    .scale(y)
+    .ticks(10)
+    .tickFormat(d3.format(".0%"))
+    .orient("left");
+  
+  var svg = d3.select("#serverView").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+  svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis)
+    .selectAll("text")  
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", function(d) {
+        return "rotate(-65)" 
+        });;
+  
+  svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+          
+  var bars = svg.selectAll("rect")
     .data(data)
-    .enter().append("div")
-    .style("width", function(d) { return (d.online ? 100 : 0) + "px"; })
-    .append("div")
-    .text(function(d) { return new Date(d.date).toDateString(); })
-    .style("color", function(d) { return "black"; }); 
+    .enter().append("rect")
+    .attr("x", function(d) {return x(d.date);})
+    .attr("y", function(d) {return height - y(1-d.online);})
+    .attr("width",10)
+    .attr("height", function(d) {return y(1-d.online);})
+    .style("fill","blue");
 });
 </script>

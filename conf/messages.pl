@@ -14,6 +14,7 @@ app.success = Gratulacje!
 app.notFound = Żądany zasób nie istnieje
 app.noData = Brak danych
 app.submit = Wyślij
+app.forbidden = Nie masz wystarczających uprawnień do wyświetlenia tego zasobu
 
 auth.badpass = Złe hasło lub nazwa użytkownika
 auth.logout = Zostałeś wylogowany
