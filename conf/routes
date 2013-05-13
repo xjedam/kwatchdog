@@ -19,7 +19,7 @@ GET   /users/:login/edit            controllers.User.edit(login: String)
 POST  /users/:id/update             controllers.User.update(id: String)
 
 GET   /servers                      controllers.Server.index
-GET   /servers/:id                  controllers.Server.indexUser(id: String)
+GET   /servers/:id/list             controllers.Server.indexUser(id: String)
 GET   /servers/new                  controllers.Server.create
 GET   /servers/:id/edit             controllers.Server.edit(id: String)
 GET   /servers/submit               controllers.Server.submit

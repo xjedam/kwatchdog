@@ -12,7 +12,7 @@ class UserSpec extends Specification {
     "Create a user" in {
       running(FakeApplication()) {
         model.User.getUser(userData._1) must equalTo(None)
-        val user = model.User.createUser(userData._1, userData._2, userData._3)  
+        model.User.createUser(userData._1, userData._2, userData._3)  
         model.User.getUser(userData._1) must not be None
       }
     }
@@ -52,6 +52,19 @@ class UserSpec extends Specification {
       }
     }
     
+    "Update a user" in {
+      running(FakeApplication()) {
+        model.User.getUser(userData._1) must equalTo(None)
+        model.User.createUser(userData._1, userData._2, userData._3)  
+        val user = model.User.getUser(userData._1)
+        user must not be None
+        model.User.saveUser(new model.User(user.get._id, user.get.login + "_updated", user.get.role, user.get.lang, user.get.disabled))
+        val updatedUser = model.User.getUser(user.get._id)
+        updatedUser must not be None
+        model.User.delete(user.get._id)
+        updatedUser.get.login must equalTo(userData._1 + "_updated")
+      }
+    }
+    
   }
-
 }
