@@ -16,7 +16,7 @@ class ApplicationSpec extends Specification {
   val aid = model.User.createUser("TestAdminApp@kainos.com", "admin", "en")
   val userData = new model.User(new ObjectId(uid.toString), "TestUserApp", "regular", "en", false)
   val adminData = model.User.getUser(new ObjectId(aid.toString)).get
-  val sid = model.Server.createServer("212.212.212.212", "TestServerApp", "Gdansk, Gnilna 2", "Details", userData._id, "ping", 666)
+  val sid = model.Server.createServer("212.212.212.212", "TestServerApp", "Gdansk Gnilna 2", "Details", userData._id, "ping", 666)
   val serverData = model.Server.getServer(new ObjectId(sid.toString)).get
   
   "Application" should {
@@ -124,9 +124,63 @@ class ApplicationSpec extends Specification {
 
         status(usersDeleteRes) must equalTo(SEE_OTHER)
         flash(usersDeleteRes).get("success").getOrElse("") must contain(Messages("auth.userDeleted")(Lang("en")))
+      }
+    }
+    
+    "list all servers" in {
+      running(FakeApplication()) {
+        val result = route(FakeRequest(GET, "/servers").withSession(Security.username -> adminData.login)).get
+        status(result) must equalTo(OK)
+        contentAsString(result) must contain(serverData.name)
+      }
+    }
+    
+    "view a server" in {
+      running(FakeApplication()) {
+        val result = route(FakeRequest(GET, "/servers/" + serverData._id + "/view").withSession(Security.username -> adminData.login)).get
+        status(result) must equalTo(OK)
+        contentAsString(result) must contain(serverData.name)
+      }
+    }
+    
+    "view users servers" in {
+      running(FakeApplication()) {
+        val result = route(FakeRequest(GET, "/servers/" + userData._id + "/list").withSession(Security.username -> userData.login)).get
+        status(result) must equalTo(OK)
+        contentAsString(result) must contain(serverData.name)
+      }
+    }
+    
+    "allow editing servers" in {
+      running(FakeApplication()) {
+        val result = route(FakeRequest(GET, "/servers/" + serverData._id + "/edit").withSession(Security.username -> adminData.login)).get
+        status(result) must equalTo(OK)
+        contentAsString(result) must contain(serverData.name)
+        
+        val result2 = route(FakeRequest(POST, "/servers/" + serverData._id + "/update")
+            .withFormUrlEncodedBody("ip" -> serverData.ip, "name" -> (serverData.name + "Edited"), "location" -> serverData.location,
+                "details" -> serverData.details, "method" -> serverData.method, "period" -> "321")
+            .withSession(Security.username -> adminData.login)).get
+        status(result2) must equalTo(SEE_OTHER)
+        flash(result2).get("success").getOrElse("") must contain (Messages("serv.updated")(Lang("en")))
+        
+        val result3 = route(FakeRequest(GET, "/servers/" + serverData._id + "/view").withSession(Security.username -> adminData.login)).get
+        status(result3) must equalTo(OK)
+        contentAsString(result3) must contain(serverData.name + "Edited")
+      }
+    }
+    
+    "allow deleting servers" in {
+      running(FakeApplication()) {
+        val result = route(FakeRequest(GET, "/servers/" + serverData._id + "/delete").withSession(Security.username -> adminData.login)).get
+        status(result) must equalTo(SEE_OTHER)
+        flash(result).get("success").getOrElse("") must contain (Messages("serv.deleted")(Lang("en")))
+        
+        val result2 = route(FakeRequest(GET, "/servers/" + serverData._id + "/view").withSession(Security.username -> adminData.login)).get
+        status(result2) must equalTo(SEE_OTHER)
+        flash(result2).get("error").getOrElse("") must contain (Messages("app.notFound")(Lang("en")))
         
         model.User.delete(userData._id)
-        model.User.delete(new ObjectId(uid2.toString))
         model.User.delete(adminData._id)
         model.Server.delete(serverData._id)
         true
