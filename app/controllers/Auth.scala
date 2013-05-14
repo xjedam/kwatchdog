@@ -12,8 +12,6 @@ import controllers.security.Secured
 
 object Auth extends Controller with Secured {
 
-  private val globalPass = "qwerasdf"
-
   def loginForm(implicit req: Request[AnyContent]) = Form(
     tuple(
       "login" -> text,

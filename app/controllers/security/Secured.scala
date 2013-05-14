@@ -10,6 +10,8 @@ import play.api.mvc.Results._
 import play.api.i18n.Messages
 
 trait Secured {
+  
+  val globalPass = "qwerasdf"
 
   def username(request: RequestHeader) = request.session.get(Security.username)
 

@@ -6,6 +6,7 @@ import play.api.test.Helpers._
 import org.bson.types.ObjectId
 
 class ServerSpec extends Specification {
+  override def is = args(sequential = true) ^ super.is
   val uid = model.User.createUser("TestUser123abc", "regular", "en")
   val userData = new model.User(new ObjectId(uid.toString), "TestUser123abc", "regular", "en", false)
   val serverData = new model.Server(new ObjectId(), "212.212.212.212", "TestServer123abc", "Gdansk, Gnilna 2", "Details", userData._id, "ping", 666)

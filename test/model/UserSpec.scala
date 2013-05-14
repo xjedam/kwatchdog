@@ -6,11 +6,12 @@ import play.api.test._
 import play.api.test.Helpers._
 
 class UserSpec extends Specification {
+  override def is = args(sequential = true) ^ super.is
   val userData = ("TestUser123abc", "regular", "en")
   "User" should {
     
     "Create a user" in {
-      running(FakeApplication()) {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase("memdb"))) {
         model.User.getUser(userData._1) must equalTo(None)
         model.User.createUser(userData._1, userData._2, userData._3)  
         model.User.getUser(userData._1) must not be None
@@ -18,8 +19,10 @@ class UserSpec extends Specification {
     }
     
     "Show user" in {
-      running(FakeApplication()) {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase("memdb"))) {
         val user = model.User.getUser(userData._1)
+        if(user == None)
+          model.User.createUser(userData._1, userData._2, userData._3)
         user must not be None
         user.get.login must equalTo(userData._1)
         user.get.role must equalTo(userData._2)
@@ -28,8 +31,10 @@ class UserSpec extends Specification {
     }
     
     "Delete a user" in {
-      running(FakeApplication()) {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase("memdb"))) {
         val user = model.User.getUser(userData._1)
+        if(user == None)
+          model.User.createUser(userData._1, userData._2, userData._3)
         user must not be None
         model.User.delete(user.get._id)
         model.User.getUser(userData._1) must equalTo(None)
@@ -37,7 +42,7 @@ class UserSpec extends Specification {
     }
     
     "List all users" in {
-      running(FakeApplication()) {
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase("memdb"))) {
         val startNum = model.User.getAllUsers.length
         
         model.User.createUser(userData._1 + "1", userData._2, userData._3)
@@ -53,9 +58,10 @@ class UserSpec extends Specification {
     }
     
     "Update a user" in {
-      running(FakeApplication()) {
-        model.User.getUser(userData._1) must equalTo(None)
-        model.User.createUser(userData._1, userData._2, userData._3)  
+      running(FakeApplication(additionalConfiguration = inMemoryDatabase("memdb"))) {
+        val u = model.User.getUser(userData._1)
+        if(u == None)
+          model.User.createUser(userData._1, userData._2, userData._3)  
         val user = model.User.getUser(userData._1)
         user must not be None
         model.User.saveUser(new model.User(user.get._id, user.get.login + "_updated", user.get.role, user.get.lang, user.get.disabled))
